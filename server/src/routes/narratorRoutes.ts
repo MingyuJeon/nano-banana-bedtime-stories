@@ -5,7 +5,8 @@ import {
   getNarrators, 
   createNarrator, 
   getNarratorPreview, 
-  deleteNarrator 
+  deleteNarrator,
+  generateSpeech 
 } from '../controllers/narratorController';
 
 const router = express.Router();
@@ -57,5 +58,8 @@ router.get('/:id/preview', getNarratorPreview);
 
 // Delete a narrator
 router.delete('/:id', deleteNarrator);
+
+// Generate speech with narrator's voice
+router.post('/generate-speech', generateSpeech);
 
 export default router;

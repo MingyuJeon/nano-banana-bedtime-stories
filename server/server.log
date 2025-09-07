@@ -225,3 +225,79 @@ Image saved: story-image-1757287651417-1.png
 Image saved: story-image-1757287651966-0.png
 Image saved: story-image-1757287652629-4.png
 All images generated successfully
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+Server is running on port 5001
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+Server is running on port 5001
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+Server is running on port 5001
+Analyzing user image for character features...
+Character description: A young boy, appearing to be between 4-7 years old, stands with a bright, open expression. He has short, straight, dark brown hair, neatly styled and swept slightly to one side without a distinct part, with a clean-cut look above his ears. His round, dark brown eyes sparkle with an innocent and direct gaze, complemented by well-defined, dark eyebrows. His face is oval-shaped with full, rosy cheeks, and his skin tone is fair with a warm, healthy flush. He wears a broad, genuine smile, revealing small, evenly spaced teeth. He has an average, lean child's build and stands tall with a confident, relaxed posture, arms loosely at his sides. His outfit consists of a short-sleeved, crew-neck t-shirt featuring horizontal stripes in alternating shades of light blue, medium blue, and white, with a functional patch pocket on the wearer's left chest. He is wearing classic blue denim jeans, slightly faded, completing a simple and casual ensemble.
+Generating personalized story with character...
+User image available for reference: /uploads/userImage-1757288319250-568572341.png
+Generating images with gemini-2.5-flash-image-preview...
+Generating image 1/7...
+Generating image 2/7...
+Generating image 3/7...
+Generating image 4/7...
+Generating image 5/7...
+Generating image 6/7...
+Generating image 7/7...
+Image saved: story-image-1757288353028-1.png
+Image saved: story-image-1757288353164-5.png
+Image saved: story-image-1757288353172-4.png
+Image saved: story-image-1757288354317-2.png
+Image saved: story-image-1757288354362-6.png
+Image saved: story-image-1757288354383-0.png
+Image saved: story-image-1757288354403-3.png
+All images generated successfully
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+Server is running on port 5001
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+Server is running on port 5001
+[32m[nodemon] clean exit - waiting for changes before restart[39m
