@@ -1,0 +1,227 @@
+
+> server@1.0.0 dev
+> nodemon --exec ts-node src/index.ts
+
+[33m[nodemon] 3.1.10[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: ts,json[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+ElevenLabs API Key loaded: Yes
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+ElevenLabs API Key loaded: Yes
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+Server is running on port 5001
+User image available for reference: /uploads/test.jpg
+Generating images with gemini-2.5-flash-image-preview...
+Generating image 1/1...
+Prompt preview: A happy child playing in a garden...
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+ElevenLabs API Key loaded: Yes
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+Server is running on port 5001
+User image available for reference: /uploads/test.jpg
+Generating images with gemini-2.5-flash-image-preview...
+Generating image 1/1...
+Prompt preview: A happy child playing in a garden...
+Response for image 1: {
+  hasResponse: true,
+  hasCandidates: true,
+  candidatesLength: 1,
+  firstCandidate: 'exists'
+}
+Image saved: story-image-1757286283808-0.png
+All images generated successfully
+Analyzing user image for character features...
+Character description: A young child, appearing to be around 4-7 years old, stands with an open and joyful demeanor. He has dark brown, almost black hair that is neatly cut short, swept slightly to the side with a natural, soft texture, revealing some lighter brown highlights at the crown due to the sun. His bright, wide-set eyes are a deep, dark brown, almost black, and are alight with a cheerful expression, complemented by prominent, well-defined dark eyebrows. His face is an oval to slightly heart shape, with soft, rounded cheeks and a fair to light olive skin tone that appears healthy and smooth. A charming, wide smile reveals his small, evenly spaced teeth. He wears a short-sleeved, crew-neck t-shirt featuring horizontal stripes of varying widths in alternating shades of light sky blue, medium royal blue, and white, with a solid royal blue breast pocket on the left side. Below, he wears standard indigo blue denim jeans. His body type is slender and age-appropriate, and he stands with a relaxed, upright posture, hands resting loosely at his sides, conveying an approachable and happy presence.
+Generating personalized story with character...
+[32m[nodemon] restarting due to changes...[39m
+User image available for reference: /uploads/userImage-1757286452379-623851836.png
+Generating images with gemini-2.5-flash-image-preview...
+Generating image 1/6...
+Prompt preview: A young child, appearing to be around 4-7 years old, stands with an open and joyful demeanor. He has...
+Generating image 2/6...
+Prompt preview: A young child, appearing to be around 4-7 years old, stands with an open and joyful demeanor. He has...
+Generating image 3/6...
+Prompt preview: A young child, appearing to be around 4-7 years old, stands with an open and joyful demeanor. He has...
+Generating image 4/6...
+Prompt preview: A young child, appearing to be around 4-7 years old, stands with an open and joyful demeanor. He has...
+Generating image 5/6...
+Prompt preview: A young child, appearing to be around 4-7 years old, stands with an open and joyful demeanor. He has...
+Generating image 6/6...
+Prompt preview: A young child, appearing to be around 4-7 years old, stands with an open and joyful demeanor. He has...
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+ElevenLabs API Key loaded: Yes
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+Server is running on port 5001
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+ElevenLabs API Key loaded: Yes
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+ElevenLabs API Key loaded: Yes
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+Server is running on port 5001
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+ElevenLabs API Key loaded: Yes
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+Server is running on port 5001
+Analyzing user image for character features...
+Character description: A young child, approximately 5-7 years old, stands with a bright and friendly demeanor. He has straight, dark brown hair, almost black, with subtle lighter brown highlights, neatly cut short around his ears and gently swept to the side from a left parting, with the bangs brushed away from his forehead. His eyes are dark brown, almost black, with an almond shape, appearing bright and engaging, enhanced by his dark, slightly arched eyebrows. His face is oval with soft, rounded cheeks and a fair to light skin tone that has a healthy glow, particularly on his cheeks. He sports a wide, genuine smile that reveals straight white teeth. He wears a short-sleeved t-shirt featuring horizontal stripes of varying widths in white, light blue, and a medium blue, with a small, striped chest pocket on the left side. Below, he wears medium blue denim jeans. His body type is slender and proportionate for his age, and he stands upright with a relaxed posture, arms naturally at his sides.
+Generating personalized story with character...
+[32m[nodemon] restarting due to changes...[39m
+User image available for reference: /uploads/userImage-1757286767474-926297462.png
+Generating images with gemini-2.5-flash-image-preview...
+Generating image 1/7...
+Prompt preview: A young boy with a curious expression, kneeling and gently pushing aside rose bush leaves, looking t...
+Generating image 2/7...
+Prompt preview: A young boy with an awestruck expression, standing before a luminous archway made of twisting, glowi...
+Generating image 3/7...
+Prompt preview: A young boy with a surprised but kind smile, looking down at a small, glowing winged sprite hovering...
+Generating image 4/7...
+Prompt preview: A young boy and a tiny glowing sprite standing near a path in a whimsical forest, pointing towards a...
+Generating image 5/7...
+Prompt preview: A young boy with a genuine smile, holding out a half-eaten apple towards a surprised, initially grum...
+Generating image 6/7...
+Prompt preview: A young boy with a triumphant and joyful expression, gently sprinkling shimmering dew from a small c...
+Generating image 7/7...
+Prompt preview: A young boy with a happy and contented smile, waving goodbye to a group of joyful magical creatures ...
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+ElevenLabs API Key loaded: Yes
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+/Users/god/hackathon/goons/story-teller/server/node_modules/ts-node/src/index.ts:859
+    return new TSError(diagnosticText, diagnosticCodes, diagnostics);
+           ^
+TSError: ⨯ Unable to compile TypeScript:
+src/controllers/narratorController.ts(4,30): error TS7016: Could not find a declaration file for module 'uuid'. '/Users/god/hackathon/goons/story-teller/server/node_modules/uuid/dist/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/uuid` if it exists or add a new declaration (.d.ts) file containing `declare module 'uuid';`
+
+    at createTSError (/Users/god/hackathon/goons/story-teller/server/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/god/hackathon/goons/story-teller/server/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/god/hackathon/goons/story-teller/server/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/god/hackathon/goons/story-teller/server/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/god/hackathon/goons/story-teller/server/node_modules/ts-node/src/index.ts:1617:30)
+    at node:internal/modules/cjs/loader:1895:10
+    at Object.require.extensions.<computed> [as .ts] (/Users/god/hackathon/goons/story-teller/server/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1465:32)
+    at Function._load (node:internal/modules/cjs/loader:1282:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+  diagnosticCodes: [ 7016 ]
+}
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+Server is running on port 5001
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+Server is running on port 5001
+Analyzing user image for character features...
+Character description: A cheerful young child, appearing to be around 5-7 years old, stands with an open, friendly posture. He has straight, dark brown hair cut relatively short, brushed neatly with a slight part on his left side, and a soft texture. His eyes are a warm, dark brown, almost black, with a gentle almond shape, expressing happiness and warmth, slightly crinkling at the corners as he smiles. His face is oval with soft, round cheeks and a fair, lightly tanned skin tone that shows a healthy blush. He has a small, slightly upturned nose and a wide, genuine smile that reveals a row of small, even teeth. His eyebrows are dark and well-defined, mirroring the slight arch of his eyes. He wears a short-sleeved t-shirt featuring distinct horizontal stripes in alternating white, light blue, and medium royal blue, with a rounded neckline and a single breast pocket on the wearer's left side made of the same striped fabric. Below, he wears dark blue denim jeans. His body type is slender to average for his age, and he stands upright with his arms relaxed at his sides, exuding a confident and approachable demeanor.
+Generating personalized story with character...
+User image available for reference: /uploads/userImage-1757287611861-935276374.png
+Generating images with gemini-2.5-flash-image-preview...
+Generating image 1/6...
+Generating image 2/6...
+Generating image 3/6...
+Generating image 4/6...
+Generating image 5/6...
+Generating image 6/6...
+Image saved: story-image-1757287651116-3.png
+Image saved: story-image-1757287651158-5.png
+Image saved: story-image-1757287651283-2.png
+Image saved: story-image-1757287651417-1.png
+Image saved: story-image-1757287651966-0.png
+Image saved: story-image-1757287652629-4.png
+All images generated successfully

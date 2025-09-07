@@ -6,7 +6,8 @@
       "Bash(npm start)",
       "Bash(curl:*)",
       "Bash(lsof:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []

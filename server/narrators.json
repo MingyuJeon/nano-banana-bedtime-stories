@@ -1,0 +1,20 @@
+{
+  "narrators": [
+    {
+      "id": "9e59470f-44a4-4772-9eb6-9f236d3a8caf",
+      "name": "Test Narrator",
+      "voiceId": "9e59470f-44a4-4772-9eb6-9f236d3a8caf",
+      "voiceUrl": null,
+      "imageUrl": null,
+      "createdAt": 1757287493247
+    },
+    {
+      "id": "e1a91a76-81c4-4d89-ad38-6a7311f1e424",
+      "name": "민규",
+      "voiceId": "e1a91a76-81c4-4d89-ad38-6a7311f1e424",
+      "voiceUrl": "/uploads/voiceFile-1757287570818-386589158.mp3",
+      "imageUrl": null,
+      "createdAt": 1757287570822
+    }
+  ]
+}
