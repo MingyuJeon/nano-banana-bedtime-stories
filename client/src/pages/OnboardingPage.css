@@ -42,35 +42,16 @@
   position: absolute;
 }
 
-/* Fairy character - positioned at top */
+/* Banana character - positioned at top */
 .fairy {
-  width: 180px;
-  height: 180px;
-  background: linear-gradient(145deg, #ffd89b 0%, #19547b 100%);
-  border-radius: 50%;
+  width: 200px;
+  height: auto;
   animation: float 3s ease-in-out infinite;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   z-index: 10;
   top: 10%;
+  object-fit: contain;
 }
 
-.fairy::before {
-  content: "✨";
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  font-size: 2rem;
-  animation: sparkle 2s ease-in-out infinite;
-}
-
-.fairy::after {
-  content: "🧚";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 4rem;
-}
 
 @keyframes float {
   0%, 100% {
@@ -316,11 +297,7 @@ main {
   }
   
   .fairy {
-    width: 140px;
-    height: 140px;
-  }
-  
-  .fairy::after {
-    font-size: 3rem;
+    width: 150px;
+    height: auto;
   }
 }

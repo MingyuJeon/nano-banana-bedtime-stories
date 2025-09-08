@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
+import bananaImage from "../asset/banana.png";
 import "./OnboardingPage.css";
 
 /** 가벼운 타이핑 훅 */
@@ -19,7 +20,13 @@ function useTyping(text: string, start: boolean, cps = 20) {
   return out;
 }
 
-const MOODS = ["Happy", "Brave", "Sleepy", "Curious", "Silly"] as const;
+const MOODS = [
+  "😄 Happy",
+  "🙂 Normal",
+  "😔 Feeling down",
+  "😟 Facing worries",
+  "😊 Feeling loved",
+] as const;
 
 export default function OnboardingPage({
   onComplete,
@@ -39,8 +46,21 @@ export default function OnboardingPage({
   const { scrollYProgress } = useScroll();
 
   // 타이핑 텍스트 - Hook은 항상 호출되어야 함
-  const askAboutYouText = useTyping("Tell me about you", currentStep >= 1, 24);
-  const askMoodText = useTyping("How you feel today?", currentStep >= 3, 24);
+  const fairyIntroText = useTyping(
+    "Hi! Welcome to Banana Bedtime Stories!",
+    currentStep >= 0,
+    24
+  );
+  const askAboutYouText = useTyping(
+    "Tell me about yourself ☺️",
+    currentStep >= 1,
+    24
+  );
+  const askMoodText = useTyping(
+    "How are you feeling today?",
+    currentStep >= 3,
+    24
+  );
 
   // 스크롤 진행도를 스텝으로 변환 (0-6 단계)
   useEffect(() => {
@@ -100,10 +120,11 @@ export default function OnboardingPage({
 
       {/* 고정된 컨텐츠 영역 */}
       <div className="fixed-content">
-        {/* 요정은 항상 표시 */}
-        <motion.div
+        {/* 바나나 캐릭터는 항상 표시 */}
+        <motion.img
+          src={bananaImage}
           className="fairy"
-          aria-hidden
+          alt="Banana character"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
@@ -116,6 +137,11 @@ export default function OnboardingPage({
         <motion.p className="subtitle" style={{ opacity: subtitleOpacity }}>
           Bedtime stories made just for you
         </motion.p>
+
+        {/* Ask About You - 두번째 단계 */}
+        <motion.div className="bubble" style={{ opacity: askAboutYouOpacity }}>
+          {fairyIntroText}
+        </motion.div>
 
         {/* Ask About You - 두번째 단계 */}
         <motion.div className="bubble" style={{ opacity: askAboutYouOpacity }}>
@@ -200,7 +226,12 @@ export default function OnboardingPage({
           ))}
         </motion.div>
 
-        {/* Narrator Register - 여섯번째 단계 */}
+        {/* 여섯째 단계 */}
+        <motion.div className="bubble" style={{ opacity: askAboutYouOpacity }}>
+          Okay, now let's add the voice to the story.
+        </motion.div>
+
+        {/* Narrator Register - 일곱번째 단계 */}
         <motion.form
           className="card narrator-card"
           style={{ opacity: narratorOpacity }}
