@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
 
@@ -8,6 +8,7 @@ interface Narrator {
   name: string;
   voiceId: string;
   imageUrl?: string;
+  description?: string;
   createdAt: number;
 }
 
@@ -22,25 +23,26 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [narrators, setNarrators] = useState<Narrator[]>([]);
-  const [playingPreview, setPlayingPreview] = useState<string | null>(null);
+  // const [narrators, setNarrators] = useState<Narrator[]>([]);
+  // const [playingPreview, setPlayingPreview] = useState<string | null>(null);
+  // const [selectedNarratorId, setSelectedNarratorId] = useState<string>("");
 
   const voiceInputRef = useRef<HTMLInputElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    fetchNarrators();
-  }, []);
+  // useEffect(() => {
+  //   fetchNarrators();
+  // }, []);
 
-  const fetchNarrators = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/api/narrators`);
-      setNarrators(response.data.narrators);
-    } catch (err) {
-      console.error("Error fetching narrators:", err);
-    }
-  };
+  // const fetchNarrators = async () => {
+  //   try {
+  //     const response = await axios.get(`${API_URL}/api/narrators`);
+  //     setNarrators(response.data.narrators);
+  //   } catch (err) {
+  //     console.error("Error fetching narrators:", err);
+  //   }
+  // };
 
   const handleVoiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -124,8 +126,8 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
         console.log("Note: Using pre-built voice due to API limitations");
       }
 
-      // Refresh narrator list
-      fetchNarrators();
+      // // Refresh narrator list
+      // fetchNarrators();
 
       if (onSuccess) {
         onSuccess();
@@ -142,24 +144,24 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
     }
   };
 
-  const handlePreviewNarrator = async (narratorId: string) => {
-    try {
-      setPlayingPreview(narratorId);
-      const response = await axios.get(
-        `${API_URL}/api/narrators/${narratorId}/preview`
-      );
+  // const handlePreviewNarrator = async (narratorId: string) => {
+  //   try {
+  //     setPlayingPreview(narratorId);
+  //     const response = await axios.get(
+  //       `${API_URL}/api/narrators/${narratorId}/preview`
+  //     );
 
-      if (audioRef.current) {
-        audioRef.current.src = `${API_URL}${response.data.previewUrl}`;
-        audioRef.current.play();
-        audioRef.current.onended = () => setPlayingPreview(null);
-      }
-    } catch (err) {
-      console.error("Error playing preview:", err);
-      alert("음성 미리듣기에 실패했습니다");
-      setPlayingPreview(null);
-    }
-  };
+  //     if (audioRef.current) {
+  //       audioRef.current.src = `${API_URL}${response.data.previewUrl}`;
+  //       audioRef.current.play();
+  //       audioRef.current.onended = () => setPlayingPreview(null);
+  //     }
+  //   } catch (err) {
+  //     console.error("Error playing preview:", err);
+  //     alert("음성 미리듣기에 실패했습니다");
+  //     setPlayingPreview(null);
+  //   }
+  // };
 
   const handleDeleteNarrator = async (narratorId: string) => {
     if (!window.confirm("이 나레이터를 삭제하시겠습니까?")) {
@@ -168,7 +170,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
 
     try {
       await axios.delete(`${API_URL}/api/narrators/${narratorId}`);
-      fetchNarrators();
+      // fetchNarrators();
     } catch (err) {
       console.error("Error deleting narrator:", err);
       alert("나레이터 삭제에 실패했습니다");
@@ -226,14 +228,14 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
             htmlFor="narrator-name"
             style={{ display: "block", marginBottom: "8px" }}
           >
-            나레이터 이름 <span style={{ color: "red" }}>*</span>
+            Who's Voice? <span style={{ color: "red" }}>*</span>
           </label>
           <input
             id="narrator-name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="예: 엄마, 아빠, 할머니"
+            placeholder="e.g. Mom, Dad, Grandmother"
             style={{
               width: "100%",
               padding: "10px",
@@ -251,7 +253,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
             htmlFor="voice-file"
             style={{ display: "block", marginBottom: "8px" }}
           >
-            음성 파일 <span style={{ color: "red" }}>*</span>
+            Voice File <span style={{ color: "red" }}>*</span>
           </label>
           <input
             ref={voiceInputRef}
@@ -270,7 +272,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
           />
           {voiceFile && (
             <p style={{ marginTop: "8px", color: "#666", fontSize: "14px" }}>
-              선택된 파일: {voiceFile.name}
+              Selected File: {voiceFile.name}
             </p>
           )}
         </div>
@@ -280,8 +282,8 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
             htmlFor="narrator-image"
             style={{ display: "block", marginBottom: "8px" }}
           >
-            나레이터 이미지{" "}
-            <span style={{ color: "#666", fontSize: "14px" }}>(선택사항)</span>
+            Narrator Image{" "}
+            <span style={{ color: "#666", fontSize: "14px" }}>(Optional)</span>
           </label>
           <input
             ref={imageInputRef}
@@ -299,7 +301,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
           />
           {imageFile && (
             <p style={{ marginTop: "8px", color: "#666", fontSize: "14px" }}>
-              선택된 이미지: {imageFile.name}
+              Selected Image: {imageFile.name}
             </p>
           )}
         </div>
@@ -322,140 +324,86 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
               cursor: loading ? "not-allowed" : "pointer",
             }}
           >
-            {loading ? "등록 중..." : "나레이터 등록"}
-          </button>
-
-          <button
-            type="button"
-            onClick={resetForm}
-            disabled={loading}
-            style={{
-              padding: "12px 24px",
-              borderRadius: "8px",
-              border: "2px solid #e0e0e0",
-              background: "white",
-              color: "#666",
-              fontSize: "16px",
-              cursor: loading ? "not-allowed" : "pointer",
-            }}
-          >
-            초기화
+            {loading ? "Registering..." : "Register"}
           </button>
         </div>
       </form>
 
       {/* Existing Narrators List */}
-      {narrators.length > 0 && (
+      {/* {narrators.length > 0 && (
         <div style={{ marginTop: "30px" }}>
           <h3 style={{ marginBottom: "20px" }}>등록된 나레이터</h3>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-              gap: "15px",
-            }}
-          >
-            {narrators.map((narrator) => (
-              <div
-                key={narrator.id}
-                style={{
-                  padding: "15px",
-                  border: "2px solid #e0e0e0",
-                  borderRadius: "12px",
-                  backgroundColor: "white",
-                  position: "relative",
-                }}
-              >
-                {narrator.imageUrl ? (
-                  <img
-                    src={`${API_URL}${narrator.imageUrl}`}
-                    alt={narrator.name}
-                    style={{
-                      width: "60px",
-                      height: "60px",
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                      margin: "0 auto 10px",
-                      display: "block",
-                    }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      width: "60px",
-                      height: "60px",
-                      borderRadius: "50%",
-                      backgroundColor: "#e0e0e0",
-                      margin: "0 auto 10px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "24px",
-                    }}
-                  >
-                    👤
-                  </div>
-                )}
-
-                <h4 style={{ textAlign: "center", margin: "10px 0" }}>
-                  {narrator.name}
-                </h4>
-                <p
-                  style={{
-                    fontSize: "12px",
-                    color: "#666",
-                    textAlign: "center",
-                  }}
-                >
-                  {new Date(narrator.createdAt).toLocaleDateString()}
-                </p>
-
-                <div style={{ display: "flex", gap: "5px", marginTop: "10px" }}>
-                  <button
-                    onClick={() => handlePreviewNarrator(narrator.id)}
-                    disabled={playingPreview === narrator.id}
-                    style={{
-                      flex: 1,
-                      padding: "8px",
-                      borderRadius: "6px",
-                      border: "1px solid #667eea",
-                      backgroundColor:
-                        playingPreview === narrator.id ? "#667eea" : "white",
-                      color:
-                        playingPreview === narrator.id ? "white" : "#667eea",
-                      cursor:
-                        playingPreview === narrator.id
-                          ? "not-allowed"
-                          : "pointer",
-                      fontSize: "12px",
-                    }}
-                  >
-                    {playingPreview === narrator.id ? "재생 중..." : "미리듣기"}
-                  </button>
-
-                  <button
-                    onClick={() => handleDeleteNarrator(narrator.id)}
-                    style={{
-                      padding: "8px 12px",
-                      borderRadius: "6px",
-                      border: "none",
-                      backgroundColor: "#ff4444",
-                      color: "white",
-                      cursor: "pointer",
-                      fontSize: "12px",
-                    }}
-                  >
-                    삭제
-                  </button>
-                </div>
-              </div>
-            ))}
+          <div style={{ marginBottom: "20px" }}>
+            <select
+              value={selectedNarratorId}
+              onChange={(e) => setSelectedNarratorId(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "12px",
+                fontSize: "16px",
+                border: "2px solid #e0e0e0",
+                borderRadius: "8px",
+                backgroundColor: "white",
+                cursor: "pointer",
+              }}
+            >
+              <option value="">나레이터를 선택하세요</option>
+              {narrators.map((narrator) => (
+                <option key={narrator.id} value={narrator.id}>
+                  {narrator.name} - {narrator.description || `등록일: ${new Date(narrator.createdAt).toLocaleDateString()}`}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+            <button
+              onClick={() => {
+                if (selectedNarratorId) {
+                  handlePreviewNarrator(selectedNarratorId);
+                }
+              }}
+              disabled={!selectedNarratorId || playingPreview === selectedNarratorId}
+              style={{
+                padding: "10px 20px",
+                backgroundColor: playingPreview === selectedNarratorId ? "#667eea" : "#4CAF50",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                cursor: !selectedNarratorId || playingPreview === selectedNarratorId ? "not-allowed" : "pointer",
+                fontSize: "14px",
+                opacity: !selectedNarratorId ? 0.5 : 1,
+              }}
+            >
+              {playingPreview === selectedNarratorId ? "재생 중..." : "미리듣기"}
+            </button>
+            <button
+              onClick={() => {
+                if (selectedNarratorId) {
+                  handleDeleteNarrator(selectedNarratorId);
+                  setSelectedNarratorId("");
+                }
+              }}
+              disabled={!selectedNarratorId}
+              style={{
+                padding: "10px 20px",
+                backgroundColor: "#ff4444",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                cursor: !selectedNarratorId ? "not-allowed" : "pointer",
+                fontSize: "14px",
+                opacity: !selectedNarratorId ? 0.5 : 1,
+              }}
+            >
+              삭제
+            </button>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Hidden audio element for preview */}
-      <audio ref={audioRef} style={{ display: "none" }} />
+      {/* <audio ref={audioRef} style={{ display: "none" }} /> */}
     </div>
   );
 };
