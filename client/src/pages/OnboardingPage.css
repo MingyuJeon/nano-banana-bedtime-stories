@@ -5,7 +5,7 @@
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #fbcd17;
 }
 
 /* Scroll container - creates scrollable height */
@@ -42,7 +42,7 @@
   position: absolute;
 }
 
-/* Fairy character - always centered */
+/* Fairy character - positioned at top */
 .fairy {
   width: 180px;
   height: 180px;
@@ -51,6 +51,7 @@
   animation: float 3s ease-in-out infinite;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   z-index: 10;
+  top: 10%;
 }
 
 .fairy::before {
@@ -180,9 +181,9 @@
 
 .input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #fbcd17;
   background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(251, 205, 23, 0.1);
 }
 
 .input[type="file"] {
@@ -193,7 +194,7 @@
 /* Button */
 .button {
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #fbcd17;
   color: white;
   border: none;
   border-radius: 10px;
@@ -201,12 +202,12 @@
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 15px rgba(251, 205, 23, 0.3);
 }
 
 .button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 20px rgba(251, 205, 23, 0.4);
 }
 
 .button:active {
@@ -237,15 +238,15 @@
 }
 
 .chip:hover {
-  border-color: #667eea;
+  border-color: #fbcd17;
   color: #667eea;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 4px 10px rgba(251, 205, 23, 0.2);
 }
 
 .chip.selected,
 .chip[aria-pressed="true"] {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #fbcd17;
   color: white;
   border-color: transparent;
 }
