@@ -1,48 +1,78 @@
-/* Container setup */
+/* Container setup with snap scroll */
 .onboarding-container {
-  position: relative;
   width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background: #fbcd17;
-}
-
-/* Scroll container - creates scrollable height */
-.scroll-container {
-  position: relative;
-  width: 100%;
-  height: 600vh; /* 6 sections */
-  pointer-events: none;
-}
-
-.scroll-section {
   height: 100vh;
-  width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background: #fbcd17;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
 }
 
-/* Fixed content area */
-.fixed-content {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+/* Each section takes full viewport */
+.onboarding-section {
+  width: 100%;
+  height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Content wrapper inside each section */
+.section-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1.5rem;
   padding: 2rem;
-  pointer-events: none;
-  z-index: 2;
+  padding-top: 200px; /* Space for banana character */
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  z-index: 50; /* Below fairy-fixed */
 }
 
-.fixed-content > * {
-  pointer-events: auto;
+/* Final section with multiple items */
+.final-section {
+  gap: 1rem;
+  justify-content: flex-start;
+  padding-top: 10vh;
+}
+
+/* Fixed banana character with background */
+.fairy-fixed {
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: auto;
+  z-index: 100;
+  animation: float 3s ease-in-out infinite;
+  object-fit: contain;
+}
+
+/* Background overlay for fairy area */
+.fairy-fixed::before {
+  content: "";
   position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background: radial-gradient(ellipse at center, #fbcd17 40%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
 }
 
-/* Banana character - positioned at top */
+/* Old fairy class for backward compatibility */
 .fairy {
   width: 200px;
   height: auto;
@@ -52,13 +82,12 @@
   object-fit: contain;
 }
 
-
 @keyframes float {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateX(-50%) translateY(-15px);
   }
 }
 
@@ -73,7 +102,7 @@
   }
 }
 
-/* Typography - positioned absolutely */
+/* Typography */
 .title {
   font-size: 3.5rem;
   font-weight: bold;
@@ -84,20 +113,16 @@
   text-align: center;
   margin: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  top: 40%;
-  z-index: 11;
 }
 
 .subtitle {
   font-size: 1.25rem;
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
-  margin: 0;
-  top: 50%;
-  z-index: 11;
+  margin: 1rem 0 0 0;
 }
 
-/* Speech bubble - positioned below fairy */
+/* Speech bubble */
 .bubble {
   background: white;
   padding: 1.5rem 2rem;
@@ -109,11 +134,9 @@
   min-width: 250px;
   text-align: center;
   font-weight: 500;
-  top: 35%;
-  z-index: 12;
 }
 
-/* Card - positioned below bubble */
+/* Card */
 .card {
   background: white;
   padding: 2.5rem;
@@ -124,9 +147,6 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  top: 55%;
-  transform: translateY(-50%);
-  z-index: 13;
 }
 
 .narrator-card {
@@ -200,9 +220,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 1rem;
-  position: absolute !important;
-  transform: translateY(-50%) !important;
-  top: 55% !important;
 }
 
 /* Chip button */
@@ -220,7 +237,7 @@
 
 .chip:hover {
   border-color: #fbcd17;
-  color: #667eea;
+  color: #fbcd17;
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(251, 205, 23, 0.2);
 }
@@ -259,35 +276,40 @@
   right: 0;
 }
 
-/* Make body scrollable */
+/* Remove old scroll container styles */
+.scroll-container {
+  display: none;
+}
+
+.fixed-content {
+  display: none;
+}
+
+/* Body styles */
 body {
   margin: 0;
   padding: 0;
-  overflow: auto;
+  overflow: hidden;
 }
 
-/* Override main styles */
+/* Main styles */
 main {
-  scroll-snap-type: none;
-  overflow-y: visible;
-  height: auto;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
   .title {
     font-size: 2.5rem;
-    top: 35%;
   }
   
   .subtitle {
     font-size: 1rem;
-    top: 43%;
   }
   
   .bubble {
     font-size: 1.25rem;
-    top: 30%;
     padding: 1rem 1.5rem;
   }
   
@@ -296,8 +318,7 @@ main {
     max-width: 90%;
   }
   
-  .fairy {
-    width: 150px;
-    height: auto;
+  .fairy-fixed {
+    width: 120px;
   }
 }
