@@ -103,7 +103,7 @@
   text-align: center;
   margin: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  top: 35%;
+  top: 40%;
   z-index: 11;
 }
 
@@ -112,7 +112,7 @@
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
   margin: 0;
-  top: 45%;
+  top: 50%;
   z-index: 11;
 }
 
@@ -128,11 +128,11 @@
   min-width: 250px;
   text-align: center;
   font-weight: 500;
-  top: 55%;
+  top: 35%;
   z-index: 12;
 }
 
-/* Card - centered */
+/* Card - positioned below bubble */
 .card {
   background: white;
   padding: 2.5rem;
@@ -143,7 +143,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  top: 50%;
+  top: 55%;
   transform: translateY(-50%);
   z-index: 13;
 }
@@ -219,9 +219,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 1rem;
-  position: relative !important;
-  transform: none !important;
-  top: auto !important;
+  position: absolute !important;
+  transform: translateY(-50%) !important;
+  top: 55% !important;
 }
 
 /* Chip button */
@@ -296,17 +296,17 @@ main {
 @media (max-width: 768px) {
   .title {
     font-size: 2.5rem;
-    top: 30%;
+    top: 35%;
   }
   
   .subtitle {
     font-size: 1rem;
-    top: 38%;
+    top: 43%;
   }
   
   .bubble {
     font-size: 1.25rem;
-    top: 50%;
+    top: 30%;
     padding: 1rem 1.5rem;
   }
   

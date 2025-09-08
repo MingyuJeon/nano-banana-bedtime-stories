@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
 import "./OnboardingPage.css";
 
 /** 가벼운 타이핑 훅 */
@@ -21,7 +21,11 @@ function useTyping(text: string, start: boolean, cps = 20) {
 
 const MOODS = ["Happy", "Brave", "Sleepy", "Curious", "Silly"] as const;
 
-export default function OnboardingPage({ onComplete }: { onComplete: (data: any) => void }) {
+export default function OnboardingPage({
+  onComplete,
+}: {
+  onComplete: (data: any) => void;
+}) {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
@@ -33,11 +37,11 @@ export default function OnboardingPage({ onComplete }: { onComplete: (data: any)
   });
 
   const { scrollYProgress } = useScroll();
-  
+
   // 타이핑 텍스트 - Hook은 항상 호출되어야 함
   const askAboutYouText = useTyping("Tell me about you", currentStep >= 1, 24);
   const askMoodText = useTyping("How you feel today?", currentStep >= 3, 24);
-  
+
   // 스크롤 진행도를 스텝으로 변환 (0-6 단계)
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (latest) => {
@@ -56,11 +60,31 @@ export default function OnboardingPage({ onComplete }: { onComplete: (data: any)
   // 각 단계별 opacity 계산
   const titleOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
   const subtitleOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-  const askAboutYouOpacity = useTransform(scrollYProgress, [0.1, 0.2, 0.3, 0.4], [0, 1, 1, 0]);
-  const readerFormOpacity = useTransform(scrollYProgress, [0.3, 0.4, 0.5, 0.6], [0, 1, 1, 0]);
-  const askMoodOpacity = useTransform(scrollYProgress, [0.5, 0.6, 0.7, 0.8], [0, 1, 1, 0]);
-  const moodPickerOpacity = useTransform(scrollYProgress, [0.7, 0.8, 0.9, 1], [0, 1, 1, 1]);
-  const narratorOpacity = useTransform(scrollYProgress, [0.85, 0.95, 1], [0, 1, 1]);
+  const askAboutYouOpacity = useTransform(
+    scrollYProgress,
+    [0.1, 0.2, 0.3, 0.4],
+    [0, 1, 1, 0]
+  );
+  const readerFormOpacity = useTransform(
+    scrollYProgress,
+    [0.3, 0.4, 0.5, 0.6],
+    [0, 1, 1, 0]
+  );
+  const askMoodOpacity = useTransform(
+    scrollYProgress,
+    [0.5, 0.6, 0.7, 0.8],
+    [0, 1, 1, 0]
+  );
+  const moodPickerOpacity = useTransform(
+    scrollYProgress,
+    [0.7, 0.8, 0.9, 1],
+    [0, 1, 1, 1]
+  );
+  const narratorOpacity = useTransform(
+    scrollYProgress,
+    [0.85, 0.95, 1],
+    [0, 1, 1]
+  );
 
   return (
     <div className="onboarding-container">
@@ -77,33 +101,24 @@ export default function OnboardingPage({ onComplete }: { onComplete: (data: any)
       {/* 고정된 컨텐츠 영역 */}
       <div className="fixed-content">
         {/* 요정은 항상 표시 */}
-        <motion.div 
-          className="fairy" 
+        <motion.div
+          className="fairy"
           aria-hidden
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
         />
-        
+
         {/* Title & Subtitle - 처음에만 보임 */}
-        <motion.h1 
-          className="title"
-          style={{ opacity: titleOpacity }}
-        >
-          Banana Tales
+        <motion.h1 className="title" style={{ opacity: titleOpacity }}>
+          Banana Bedtime Stories
         </motion.h1>
-        <motion.p 
-          className="subtitle"
-          style={{ opacity: subtitleOpacity }}
-        >
+        <motion.p className="subtitle" style={{ opacity: subtitleOpacity }}>
           Bedtime stories made just for you
         </motion.p>
 
         {/* Ask About You - 두번째 단계 */}
-        <motion.div 
-          className="bubble"
-          style={{ opacity: askAboutYouOpacity }}
-        >
+        <motion.div className="bubble" style={{ opacity: askAboutYouOpacity }}>
           {askAboutYouText}
         </motion.div>
 
@@ -115,33 +130,39 @@ export default function OnboardingPage({ onComplete }: { onComplete: (data: any)
         >
           <label className="label">
             Name
-            <input 
-              className="input" 
-              name="name" 
+            <input
+              className="input"
+              name="name"
               placeholder="e.g. Aiden"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
             />
           </label>
           <label className="label">
             Age
-            <input 
-              className="input" 
-              type="number" 
-              name="age" 
-              min={0} 
+            <input
+              className="input"
+              type="number"
+              name="age"
+              min={0}
               max={120}
               value={formData.age}
-              onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, age: e.target.value })
+              }
             />
           </label>
           <label className="label">
             Gender
-            <select 
-              className="input" 
+            <select
+              className="input"
               name="gender"
               value={formData.gender}
-              onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, gender: e.target.value })
+              }
             >
               <option value="" disabled>
                 Select…
@@ -155,10 +176,7 @@ export default function OnboardingPage({ onComplete }: { onComplete: (data: any)
         </motion.form>
 
         {/* Ask Mood - 네번째 단계 */}
-        <motion.div 
-          className="bubble"
-          style={{ opacity: askMoodOpacity }}
-        >
+        <motion.div className="bubble" style={{ opacity: askMoodOpacity }}>
           {askMoodText}
         </motion.div>
 
@@ -170,10 +188,10 @@ export default function OnboardingPage({ onComplete }: { onComplete: (data: any)
           aria-label="Select your mood"
         >
           {MOODS.map((m) => (
-            <button 
-              key={m} 
-              className={`chip ${formData.mood === m ? 'selected' : ''}`}
-              type="button" 
+            <button
+              key={m}
+              className={`chip ${formData.mood === m ? "selected" : ""}`}
+              type="button"
               aria-pressed={formData.mood === m}
               onClick={() => setFormData({ ...formData, mood: m })}
             >
@@ -191,11 +209,16 @@ export default function OnboardingPage({ onComplete }: { onComplete: (data: any)
           <h3 className="card-title">Narrator Voice</h3>
           <label className="label">
             Upload voice sample
-            <input 
-              className="input" 
-              type="file" 
+            <input
+              className="input"
+              type="file"
               accept="audio/*"
-              onChange={(e) => setFormData({ ...formData, voiceFile: e.target.files?.[0] || null })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  voiceFile: e.target.files?.[0] || null,
+                })
+              }
             />
           </label>
           <div className="or">or</div>
@@ -206,7 +229,9 @@ export default function OnboardingPage({ onComplete }: { onComplete: (data: any)
               name="ttsId"
               placeholder="21m00Tcm4TlvDq8ikWAM"
               value={formData.ttsId}
-              onChange={(e) => setFormData({ ...formData, ttsId: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, ttsId: e.target.value })
+              }
             />
           </label>
           <button className="button" type="submit">
