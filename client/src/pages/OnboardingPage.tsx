@@ -143,12 +143,12 @@ export default function OnboardingPage({
           {fairyIntroText}
         </motion.div>
 
-        {/* Ask About You - 두번째 단계 */}
+        {/* Ask About You - 세번째 단계 */}
         <motion.div className="bubble" style={{ opacity: askAboutYouOpacity }}>
           {askAboutYouText}
         </motion.div>
 
-        {/* Reader Form - 세번째 단계 */}
+        {/* Reader Form - 네번째 단계 */}
         <motion.form
           className="card"
           style={{ opacity: readerFormOpacity }}
@@ -201,12 +201,12 @@ export default function OnboardingPage({
           </label>
         </motion.form>
 
-        {/* Ask Mood - 네번째 단계 */}
+        {/* Ask Mood - 다섯번째 단계 */}
         <motion.div className="bubble" style={{ opacity: askMoodOpacity }}>
           {askMoodText}
         </motion.div>
 
-        {/* Mood Picker - 다섯번째 단계 */}
+        {/* Mood Picker - 여섯번째 단계 */}
         <motion.div
           className="card grid"
           style={{ opacity: moodPickerOpacity }}
@@ -226,12 +226,12 @@ export default function OnboardingPage({
           ))}
         </motion.div>
 
-        {/* 여섯째 단계 */}
+        {/* Ask About You - 일곱번째 단계 */}
         <motion.div className="bubble" style={{ opacity: askAboutYouOpacity }}>
           Okay, now let's add the voice to the story.
         </motion.div>
 
-        {/* Narrator Register - 일곱번째 단계 */}
+        {/* Narrator Register - 여덟번째 단계 */}
         <motion.form
           className="card narrator-card"
           style={{ opacity: narratorOpacity }}
