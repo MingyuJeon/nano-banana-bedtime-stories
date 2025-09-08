@@ -2,9 +2,11 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import { Request, Response } from "express";
+import { exec } from "node:child_process";
 import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { promisify } from "node:util";
 
 // Load environment variables
 dotenv.config();
@@ -61,7 +63,7 @@ const getFileHash = (filePath: string): string => {
 
 export const generateStory = async (req: Request, res: Response) => {
   try {
-    const { age, gender } = req.body;
+    const { age, gender, userName } = req.body;
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
     if (!age || !gender) {
@@ -82,6 +84,67 @@ export const generateStory = async (req: Request, res: Response) => {
     const base64Image = imageData.toString("base64");
 
     console.log("Analyzing user image for character features...");
+
+    // First, detect if this is a portrait photo or a drawing/doodle
+    const imageTypeResponse = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: `Analyze this image and determine if it's:
+                     1. A portrait photo of a real person
+                     2. A drawing, doodle, sketch, or illustration
+                     
+                     Respond with ONLY one word: "PORTRAIT" or "DRAWING"`,
+            },
+            {
+              inlineData: {
+                mimeType: files.userImage[0].mimetype,
+                data: base64Image,
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    const imageType =
+      imageTypeResponse.text?.trim().toUpperCase() || "PORTRAIT";
+    console.log("Image type detected:", imageType);
+
+    // Different prompts based on image type
+    let analysisPrompt: string;
+    if (imageType === "DRAWING") {
+      analysisPrompt = `This is a drawing/doodle. Transform it into a character description for a children's story.
+                       Make this doodle as a character for kids story. Create a friendly, magical character based on this drawing.
+                       
+                       Describe the character including:
+                       - What kind of creature or character it could be (animal, magical being, person, etc.)
+                       - Colors and patterns visible in the drawing
+                       - Any unique features or characteristics
+                       - Personality traits suggested by the drawing
+                       - Clothing or accessories if any
+                       - Make it appealing and friendly for children aged ${age}
+                       
+                       Format: Write as a single detailed paragraph that describes this character for a children's story.
+                       Example: "A friendly magical creature with round eyes and a big smile, colorful fur with star patterns..."`;
+    } else {
+      analysisPrompt = `Analyze this portrait photo and describe the person's appearance in great detail for character consistency.
+                       Provide a detailed description including:
+                       - Age: ${age}
+                       - Hair: color, length, style, texture
+                       - Eyes: color, shape, expression
+                       - Face: shape, skin tone, distinctive features
+                       - Clothing: colors, style, patterns, accessories
+                       - Body type and posture
+                       - Any unique identifying features
+                       
+                       Format: Write as a single detailed paragraph that can be used as a character reference for illustration.
+                       Example: "A young child with curly brown hair, bright green eyes, wearing a red t-shirt with a star pattern..."`;
+    }
+
     const imageAnalysisResponse = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: [
@@ -89,19 +152,7 @@ export const generateStory = async (req: Request, res: Response) => {
           role: "user",
           parts: [
             {
-              text: `Analyze this image and describe the person's appearance in great detail for character consistency.
-                     Provide a detailed description including:
-                     - Age: ${age}
-                     - Hair: color, length, style, texture
-                     - Eyes: color, shape, expression
-                     - Face: shape, skin tone, distinctive features
-                     - Clothing: colors, style, patterns, accessories
-                     - Body type and posture
-                     - Any unique identifying features
-                     
-                     Format: Write as a single detailed paragraph that can be used as a character reference for illustration.
-                     Example: "A young child with curly brown hair, bright green eyes, wearing a red t-shirt with a star pattern..."
-                     `,
+              text: analysisPrompt,
             },
             {
               inlineData: {
@@ -118,6 +169,11 @@ export const generateStory = async (req: Request, res: Response) => {
       imageAnalysisResponse.text || "a child with bright eyes and a warm smile";
     console.log("Character description:", characterDescription);
 
+    // Use userName as protagonist name if image is a portrait and userName is provided
+    const protagonistName =
+      imageType === "PORTRAIT" && userName ? userName : "the child";
+    console.log("Protagonist name:", protagonistName);
+
     // Step 2: Create story with character-aware prompts
     const contents = `
       Create a magical fairy tale story for a ${age}-year-old ${gender} child.
@@ -125,12 +181,23 @@ export const generateStory = async (req: Request, res: Response) => {
       CRITICAL CHARACTER REFERENCE - Use this EXACT description for the main character:
       "${characterDescription}"
       
+      ${
+        imageType === "PORTRAIT" && userName
+          ? `IMPORTANT: The main character's name is "${userName}". Use this name throughout the story instead of generic terms like "the child" or "they".`
+          : ""
+      }
+      
       Story Requirements:
       1. Age-appropriate content for a ${age}-year-old
       2. The main character MUST match the description above in every scene
-      3. Include magical elements, adventure, and wonder
-      4. Have a clear positive message or moral lesson
-      5. Create exactly 5-7 pages/scenes with vivid descriptions
+      3. ${
+        imageType === "PORTRAIT" && userName
+          ? `The main character's name is "${userName}" - use this name consistently`
+          : "You can give the character an appropriate name or refer to them descriptively"
+      }
+      4. Include magical elements, adventure, and wonder
+      5. Have a clear positive message or moral lesson about courage, happiness, imagination, friendship, confidence
+      6. Create exactly 5-7 pages/scenes with vivid descriptions
       
       IMAGE PROMPT INSTRUCTIONS:
       - EVERY imagePrompt MUST begin with the EXACT character description
@@ -138,21 +205,26 @@ export const generateStory = async (req: Request, res: Response) => {
       - Be specific about actions, expressions, and environments
       - Maintain character consistency across all prompts
       
-      Format as JSON:
+      IMPORTANT: Return ONLY valid JSON without any markdown formatting or extra text.
+      Use double quotes for all strings. Ensure no trailing commas.
+      
+      Return this exact JSON structure:
       {
-        "title": "Story Title",
+        "title": "Your Story Title Here",
         "characterDescription": "${characterDescription}",
+        "protagonistName": "${protagonistName}",
         "pages": [
           {
-            "text": "Story text for this page (2-3 sentences)",
-            "imagePrompt": "${characterDescription}, [specific action/pose], [detailed environment], [mood/lighting], children's book illustration style"
+            "text": "First page story text here",
+            "imagePrompt": "Character description, doing something, in some location, style details"
+          },
+          {
+            "text": "Second page story text here",
+            "imagePrompt": "Character description, doing something else, in another location, style details"
           }
         ],
-        "moral": "The lesson or moral of the story"
+        "moral": "The moral lesson of the story"
       }
-      
-      Example imagePrompt format:
-      "${characterDescription}, standing in a magical forest with glowing butterflies, warm sunset lighting, whimsical storybook style"
     `;
 
     // Generate story using Gemini API
@@ -163,21 +235,90 @@ export const generateStory = async (req: Request, res: Response) => {
     });
 
     const text = response.text || "";
+    console.log("Raw response from Gemini:", text.substring(0, 500) + "..."); // Log first 500 chars for debugging
 
     // Parse the JSON response
     let storyData;
     try {
+      // Clean the text first - remove any potential unwanted characters
+      let cleanedText = text.trim();
+
       // Extract JSON from the response (Gemini might return with markdown code blocks)
-      const jsonMatch =
-        text.match(/```json\n?([\s\S]*?)\n?```/) || text.match(/{[\s\S]*}/);
-      if (jsonMatch) {
-        storyData = JSON.parse(jsonMatch[1] || jsonMatch[0]);
+      const jsonMatch = cleanedText.match(/```json\n?([\s\S]*?)\n?```/);
+
+      if (jsonMatch && jsonMatch[1]) {
+        // Found JSON in markdown code block
+        cleanedText = jsonMatch[1].trim();
       } else {
-        storyData = JSON.parse(text);
+        // Try to extract JSON object directly
+        const jsonObjectMatch = cleanedText.match(/{[\s\S]*}/);
+        if (jsonObjectMatch) {
+          cleanedText = jsonObjectMatch[0];
+        }
+      }
+
+      // Remove any trailing commas before closing braces/brackets (common JSON error)
+      cleanedText = cleanedText.replace(/,(\s*[}\]])/g, "$1");
+
+      // Remove any control characters that might cause parsing issues
+      cleanedText = cleanedText.replace(/[\x00-\x1F\x7F]/g, (match) => {
+        // Keep newlines and tabs
+        if (match === "\n" || match === "\r" || match === "\t") return match;
+        return "";
+      });
+
+      console.log(
+        "Attempting to parse cleaned JSON:",
+        cleanedText.substring(0, 200) + "..."
+      );
+      storyData = JSON.parse(cleanedText);
+
+      // Validate the structure
+      if (
+        !storyData.title ||
+        !storyData.pages ||
+        !Array.isArray(storyData.pages)
+      ) {
+        throw new Error("Invalid story structure: missing required fields");
       }
     } catch (error) {
       console.error("Failed to parse story JSON:", error);
-      return res.status(500).json({ error: "Failed to generate story" });
+      console.error("Full response text:", text);
+
+      // Try to provide a fallback story structure
+      console.log("Attempting to create fallback story structure...");
+      const fallbackProtagonistName =
+        imageType === "PORTRAIT" && userName ? userName : "the brave child";
+      storyData = {
+        title: "A Magical Adventure",
+        characterDescription: characterDescription,
+        protagonistName: fallbackProtagonistName,
+        pages: [
+          {
+            text: `Once upon a time, there was ${fallbackProtagonistName} who loved adventures.`,
+            imagePrompt: `${characterDescription}, standing in a magical garden with butterflies, warm sunlight, children's book illustration style`,
+          },
+          {
+            text: `One day, ${fallbackProtagonistName} discovered a hidden path in the forest that sparkled with magic.`,
+            imagePrompt: `${characterDescription}, walking on a glowing forest path with magical sparkles, enchanted atmosphere, storybook style`,
+          },
+          {
+            text: `Along the way, ${fallbackProtagonistName} met a friendly creature who became their best friend.`,
+            imagePrompt: `${characterDescription}, meeting a cute magical creature in the forest, both smiling, whimsical illustration`,
+          },
+          {
+            text: `Together, ${fallbackProtagonistName} and their friend went on amazing adventures and learned about courage and friendship.`,
+            imagePrompt: `${characterDescription}, on an adventure with their magical friend, happy expressions, colorful storybook scene`,
+          },
+          {
+            text: `And ${fallbackProtagonistName} lived happily ever after, knowing that magic exists everywhere when you believe.`,
+            imagePrompt: `${characterDescription}, smiling with their magical friend under a rainbow, joyful ending scene, children's book style`,
+          },
+        ],
+        moral: "Believe in yourself and magic will find you.",
+      };
+
+      console.log("Using fallback story structure");
     }
 
     // Store file paths
@@ -286,9 +427,45 @@ export const generateImages = async (req: Request, res: Response) => {
   }
 };
 
+const execAsync = promisify(exec);
+
+// Helper function to adjust audio speed using ffmpeg
+const adjustAudioSpeed = async (
+  inputPath: string,
+  outputPath: string,
+  speed: number = 0.9
+) => {
+  try {
+    // speed < 1.0 = slower, speed > 1.0 = faster
+    // atempo range is 0.5 to 2.0, so we need to chain for extreme values
+    let atempoFilter = "";
+    let currentSpeed = speed;
+
+    // Handle speeds outside the 0.5-2.0 range by chaining
+    while (currentSpeed < 0.5 || currentSpeed > 2.0) {
+      if (currentSpeed < 0.5) {
+        atempoFilter += "atempo=0.5,";
+        currentSpeed = currentSpeed / 0.5;
+      } else if (currentSpeed > 2.0) {
+        atempoFilter += "atempo=2.0,";
+        currentSpeed = currentSpeed / 2.0;
+      }
+    }
+    atempoFilter += `atempo=${currentSpeed}`;
+
+    const command = `ffmpeg -i "${inputPath}" -filter:a "${atempoFilter}" -vn "${outputPath}" -y`;
+    await execAsync(command);
+    console.log(`Audio speed adjusted to ${speed}x`);
+    return true;
+  } catch (error) {
+    console.error("Failed to adjust audio speed:", error);
+    return false;
+  }
+};
+
 export const generateNarration = async (req: Request, res: Response) => {
   try {
-    const { text, voiceFile } = req.body;
+    const { text, voiceFile, speed = 0.9 } = req.body; // default speed 0.9 (slightly slower for kids)
 
     if (!text) {
       return res.status(400).json({ error: "Text is required for narration" });
@@ -354,11 +531,17 @@ export const generateNarration = async (req: Request, res: Response) => {
       console.log("Using default voice (Rachel)");
     }
 
-    // Generate speech
+    // Generate speech with adjustable voice settings
     const audio = await elevenlabs.textToSpeech.convert(voiceId, {
       text,
       modelId: "eleven_multilingual_v2",
       outputFormat: "mp3_44100_128",
+      voiceSettings: {
+        stability: 0.25,
+        similarityBoost: 0.75,
+        style: 1.4,
+        useSpeakerBoost: true,
+      },
     });
 
     // Convert audio stream to buffer
@@ -370,11 +553,36 @@ export const generateNarration = async (req: Request, res: Response) => {
 
     // Save audio file
     const uploadsDir = path.join(__dirname, "../../uploads");
-    const filename = `narration-${Date.now()}.mp3`;
-    const filepath = path.join(uploadsDir, filename);
+    const tempFilename = `narration-temp-${Date.now()}.mp3`;
+    const tempFilepath = path.join(uploadsDir, tempFilename);
 
-    fs.writeFileSync(filepath, audioBuffer);
-    const narrationUrl = `/uploads/${filename}`;
+    fs.writeFileSync(tempFilepath, audioBuffer);
+
+    // Adjust speed if needed (not 1.0)
+    let finalFilepath = tempFilepath;
+    let finalFilename = tempFilename;
+
+    if (speed !== 1.0) {
+      finalFilename = `narration-${Date.now()}.mp3`;
+      finalFilepath = path.join(uploadsDir, finalFilename);
+
+      const adjusted = await adjustAudioSpeed(
+        tempFilepath,
+        finalFilepath,
+        speed
+      );
+
+      if (adjusted) {
+        // Remove temp file after speed adjustment
+        fs.unlinkSync(tempFilepath);
+      } else {
+        // If adjustment failed, use original file
+        finalFilepath = tempFilepath;
+        finalFilename = tempFilename;
+      }
+    }
+
+    const narrationUrl = `/uploads/${finalFilename}`;
 
     res.json({ narrationUrl });
   } catch (error) {
