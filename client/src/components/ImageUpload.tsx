@@ -88,8 +88,8 @@ const ImageUpload: React.FC = () => {
             <label htmlFor="file-input-change" style={{ display: "none" }}>
               파일 선택
             </label>
-            <button onClick={handleButtonClick} aria-label="이미지 변경">
-              이미지 변경
+            <button onClick={handleButtonClick} aria-label="이미지 제출">
+              Upload Image
             </button>
           </div>
         </div>

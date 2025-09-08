@@ -207,8 +207,8 @@ const StoryViewer: React.FC = () => {
           }}
         >
           {selectedNarrator
-            ? `나레이터: ${selectedNarrator.name}`
-            : "나레이터 선택"}{" "}
+            ? `Voice: ${selectedNarrator.name}`
+            : "Voice Select"}{" "}
           ▼
         </button>
 
