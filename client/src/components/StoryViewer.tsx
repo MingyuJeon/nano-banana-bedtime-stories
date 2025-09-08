@@ -187,12 +187,12 @@ const StoryViewer: React.FC = () => {
 
   return (
     <div className="story-viewer">
-      <h2 style={{ textAlign: "center", marginBottom: "30px" }}>
+      <h2 style={{ textAlign: "center", marginBottom: "20px", flexShrink: 0 }}>
         {currentStory.title}
       </h2>
 
       {/* Narrator Selector */}
-      <div style={{ marginBottom: "30px" }}>
+      <div style={{ marginBottom: "20px", flexShrink: 0 }}>
         <button
           onClick={() => setShowNarratorSelector(!showNarratorSelector)}
           style={{
@@ -223,7 +223,7 @@ const StoryViewer: React.FC = () => {
               color: "#856404",
             }}
           >
-            나레이션을 생성하고 있습니다... 잠시만 기다려주세요.
+            🎙️ Generating narration... Please wait.
           </div>
         )}
 
