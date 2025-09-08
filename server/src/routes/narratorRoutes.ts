@@ -6,7 +6,8 @@ import {
   createNarrator, 
   getNarratorPreview, 
   deleteNarrator,
-  generateSpeech 
+  generateSpeech,
+  generateBatchNarrations 
 } from '../controllers/narratorController';
 
 const router = express.Router();
@@ -61,5 +62,8 @@ router.delete('/:id', deleteNarrator);
 
 // Generate speech with narrator's voice
 router.post('/generate-speech', generateSpeech);
+
+// Generate batch narrations for entire story
+router.post('/generate-batch-narrations', generateBatchNarrations);
 
 export default router;

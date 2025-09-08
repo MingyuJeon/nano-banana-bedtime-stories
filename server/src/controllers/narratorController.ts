@@ -288,3 +288,126 @@ export const generateSpeech = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to generate speech' });
   }
 };
+
+// Cache for story narrations per narrator
+interface StoryNarrationCache {
+  [key: string]: { // key format: "storyId-narratorId-pageIndex"
+    narrationUrl: string;
+    createdAt: number;
+  };
+}
+
+const storyNarrationCachePath = path.join(__dirname, '../../story-narration-cache.json');
+let storyNarrationCache: StoryNarrationCache = {};
+
+// Load story narration cache on startup
+if (fs.existsSync(storyNarrationCachePath)) {
+  try {
+    storyNarrationCache = JSON.parse(fs.readFileSync(storyNarrationCachePath, 'utf-8'));
+  } catch (error) {
+    console.error('Failed to load story narration cache:', error);
+  }
+}
+
+// Save story narration cache
+const saveStoryNarrationCache = () => {
+  try {
+    fs.writeFileSync(storyNarrationCachePath, JSON.stringify(storyNarrationCache, null, 2));
+  } catch (error) {
+    console.error('Failed to save story narration cache:', error);
+  }
+};
+
+// Generate batch narrations for entire story
+export const generateBatchNarrations = async (req: Request, res: Response) => {
+  try {
+    const { storyId, narratorId, texts } = req.body;
+
+    if (!storyId || !narratorId || !texts || !Array.isArray(texts)) {
+      return res.status(400).json({ error: 'storyId, narratorId, and texts array are required' });
+    }
+
+    // Read narrators
+    const data = fs.readFileSync(NARRATORS_FILE, 'utf-8');
+    const { narrators } = JSON.parse(data);
+    
+    const narrator = narrators.find((n: any) => n.id === narratorId);
+    
+    if (!narrator) {
+      return res.status(404).json({ error: 'Narrator not found' });
+    }
+
+    let voiceId = narrator.voiceId;
+    
+    // If voiceId is just a UUID (not from ElevenLabs), use default voice
+    if (!voiceId || voiceId === narrator.id) {
+      console.log('Narrator does not have a cloned voice, using default voice');
+      voiceId = '21m00Tcm4TlvDq8ikWAM'; // Rachel voice as default
+    }
+
+    console.log(`Generating batch narrations for story ${storyId} with narrator ${narrator.name}`);
+
+    const narrationUrls: string[] = [];
+    const uploadsDir = path.join(__dirname, '../../uploads');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+
+    // Generate narration for each page
+    for (let i = 0; i < texts.length; i++) {
+      const cacheKey = `${storyId}-${narratorId}-${i}`;
+      
+      // Check if we have cached narration
+      if (storyNarrationCache[cacheKey]) {
+        console.log(`Using cached narration for page ${i + 1}`);
+        narrationUrls.push(storyNarrationCache[cacheKey].narrationUrl);
+        continue;
+      }
+
+      console.log(`Generating narration for page ${i + 1}/${texts.length}`);
+      
+      try {
+        // Generate speech using ElevenLabs TTS
+        const audio = await elevenlabs.textToSpeech.convert(voiceId, {
+          text: texts[i],
+          modelId: 'eleven_multilingual_v2',
+          outputFormat: 'mp3_44100_128',
+        });
+
+        // Convert audio stream to buffer
+        const chunks: Buffer[] = [];
+        for await (const chunk of audio) {
+          chunks.push(Buffer.from(chunk));
+        }
+        const audioBuffer = Buffer.concat(chunks);
+
+        // Save audio file
+        const filename = `story-${storyId}-narrator-${narratorId}-page-${i}-${Date.now()}.mp3`;
+        const filepath = path.join(uploadsDir, filename);
+
+        fs.writeFileSync(filepath, audioBuffer);
+        const narrationUrl = `/uploads/${filename}`;
+        
+        // Cache the narration
+        storyNarrationCache[cacheKey] = {
+          narrationUrl,
+          createdAt: Date.now(),
+        };
+        
+        narrationUrls.push(narrationUrl);
+      } catch (error) {
+        console.error(`Failed to generate narration for page ${i + 1}:`, error);
+        narrationUrls.push(''); // Push empty string for failed narration
+      }
+    }
+
+    // Save cache
+    saveStoryNarrationCache();
+
+    console.log(`Batch narration generation completed. Generated ${narrationUrls.filter(url => url).length}/${texts.length} narrations`);
+    res.json({ narrationUrls });
+  } catch (error) {
+    console.error('Batch narration generation error:', error);
+    res.status(500).json({ error: 'Failed to generate batch narrations' });
+  }
+};
