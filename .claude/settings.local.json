@@ -12,7 +12,11 @@
       "Bash(rm:*)",
       "Bash(cat:*)",
       "Bash(npx ts-node:*)",
-      "Bash(npx nodemon:*)"
+      "Bash(npx nodemon:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(PORT=3001 npm start)",
+      "Bash(PORT=3002 npm start)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": [],
     "ask": []
