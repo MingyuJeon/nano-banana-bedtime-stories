@@ -1,138 +1,212 @@
-# AI 동화책 생성 서비스
+# 🌟 AI Story Teller
 
-사용자의 이미지와 정보를 기반으로 개인화된 동화를 생성하는 웹 애플리케이션입니다.
+An interactive AI-powered storytelling application that creates personalized fairy tales for children. The app generates unique stories based on user photos, creates custom illustrations, and provides narration with various voice options.
 
-## 주요 기능
+## ✨ Features
 
-1. **사용자 이미지 업로드**: 사용자가 자신의 이미지를 업로드
-2. **사용자 정보 입력**: 나이와 성별 정보 입력
-3. **음성 파일 업로드** (선택사항): 내레이션용 음성 파일 업로드
-4. **개인화된 동화 생성**: Gemini Pro 2.5를 사용한 동화 생성
-5. **배경 음악 생성**: 생성된 이미지 분석을 통한 적절한 배경 음악 생성
-6. **읽기 기능**: 업로드된 음성 또는 ElevenLabs API를 통한 내레이션 재생
+### 📖 Story Generation
+- **Personalized Stories**: AI generates unique fairy tales based on uploaded user photos
+- **Age-Appropriate Content**: Stories tailored to the child's age and gender
+- **Multi-Page Adventures**: Each story consists of 6-7 illustrated pages
+- **Moral Lessons**: Every story includes meaningful life lessons
 
-## 기술 스택
+### 🎨 Visual Experience
+- **AI-Generated Illustrations**: Custom artwork for each story page
+- **Character Consistency**: Maintains character appearance throughout the story
+- **Responsive Design**: Optimized viewing experience across all devices
+- **Interactive UI**: Smooth page transitions and intuitive navigation
+
+### 🎙️ Narration System
+- **Multiple Narrators**: Choose from various AI voice options
+- **Custom Voice Cloning**: Register your own voice as a narrator
+- **Page-by-Page Narration**: Synchronized audio for each story page
+- **Playback Controls**: Play, pause, and navigate with ease
+
+### 📚 Story Management
+- **Story Library**: Save and revisit generated stories
+- **Thumbnail Generation**: Automatic story previews
+- **Story Persistence**: All stories saved with images and narration
+
+## 🚀 Tech Stack
 
 ### Frontend
-- React (TypeScript)
-- Zustand (상태 관리)
-- React Testing Library (TDD)
-- Axios (HTTP 클라이언트)
+- **React 19** with TypeScript
+- **Tailwind CSS v4** for styling
+- **Zustand** for state management
+- **Framer Motion** for animations
+- **Axios** for API communication
 
 ### Backend
-- Node.js / Express
-- TypeScript
-- Multer (파일 업로드)
-- Google Generative AI (Gemini)
+- **Node.js** with Express 5
+- **TypeScript** for type safety
+- **Google Gemini AI** for story generation
+- **ElevenLabs API** for voice synthesis
+- **Multer** for file uploads
+- **Sharp** for image processing
 
-## 설치 및 실행
+## 📦 Installation
 
-### 필수 요구사항
-- Node.js (v14 이상)
-- npm 또는 yarn
-- Gemini API 키
+### Prerequisites
+- Node.js 18+ and npm
+- Google Gemini API key
+- ElevenLabs API key (for narration features)
 
-### 설치
+### Setup Instructions
 
-1. 저장소 클론
+1. **Clone the repository**
 ```bash
+git clone https://github.com/yourusername/story-teller.git
 cd story-teller
 ```
 
-2. 서버 의존성 설치
+2. **Install dependencies**
+
+For the server:
 ```bash
 cd server
 npm install
 ```
 
-3. 클라이언트 의존성 설치
+For the client:
 ```bash
 cd ../client
 npm install
 ```
 
-### 환경 변수 설정
+3. **Configure environment variables**
 
-1. 서버 환경 변수
-```bash
-cd server
-cp .env.example .env
-# .env 파일을 열어 GEMINI_API_KEY를 설정하세요
+Create `.env` file in the server directory:
+```env
+PORT=5001
+GOOGLE_API_KEY=your_google_gemini_api_key
+ELEVENLABS_API_KEY=your_elevenlabs_api_key
 ```
 
-2. 클라이언트 환경 변수 (선택사항)
-```bash
-cd ../client
-cp .env.example .env
-# 필요시 API URL을 수정하세요
+Create `.env` file in the client directory:
+```env
+REACT_APP_API_URL=http://localhost:5001
 ```
 
-### 실행
+4. **Start the application**
 
-1. 서버 시작
+Start the server (from server directory):
 ```bash
-cd server
 npm run dev
 ```
 
-2. 새 터미널에서 클라이언트 시작
+Start the client (from client directory):
 ```bash
-cd client
 npm start
 ```
 
-3. 브라우저에서 http://localhost:3000 접속
+The application will be available at `http://localhost:3000`
 
-## 테스트
+## 🎮 Usage
 
-### 클라이언트 테스트
-```bash
-cd client
-npm test
-```
+### Creating Your First Story
 
-## 프로젝트 구조
+1. **Upload a Photo**: Click the upload area and select a photo of the child
+2. **Enter User Information**: Provide the child's name, age, and gender
+3. **Generate Story**: Click "Create Story" to generate a personalized fairy tale
+4. **Select Narrator**: Choose from available AI voices or register your own
+5. **Enjoy the Story**: Navigate through pages, play narration, and immerse in the adventure
+
+### Registering a Custom Narrator
+
+1. Click "Narrator Register" button
+2. Enter a name for your narrator
+3. Upload a voice sample (clear audio, 30 seconds minimum)
+4. Submit and wait for processing
+5. Your voice will be available for all future stories
+
+## 🗂️ Project Structure
 
 ```
 story-teller/
-├── client/                  # React 프론트엔드
+├── client/                 # React frontend
 │   ├── src/
-│   │   ├── components/     # React 컴포넌트
-│   │   │   ├── ImageUpload.tsx
-│   │   │   ├── UserInfo.tsx
-│   │   │   ├── VoiceUpload.tsx
-│   │   │   └── StoryViewer.tsx
-│   │   ├── store/          # Zustand 스토어
-│   │   │   └── useStoryStore.ts
-│   │   └── App.tsx         # 메인 앱 컴포넌트
+│   │   ├── components/    # React components
+│   │   ├── pages/        # Page components
+│   │   ├── store/        # Zustand store
+│   │   └── App.tsx       # Main application
 │   └── package.json
 │
-├── server/                  # Express 백엔드
+├── server/                # Node.js backend
 │   ├── src/
-│   │   ├── controllers/    # 컨트롤러
-│   │   │   └── storyController.ts
-│   │   ├── routes/         # 라우트
-│   │   │   └── storyRoutes.ts
-│   │   └── index.ts        # 서버 엔트리 포인트
+│   │   ├── routes/       # API routes
+│   │   ├── services/     # Business logic
+│   │   └── index.ts      # Server entry point
+│   ├── uploads/          # User uploads storage
 │   └── package.json
 │
-└── README.md
+└── docs/                  # Documentation
 ```
 
-## API 엔드포인트
+## 🔌 API Endpoints
 
-- `POST /api/story/generate` - 동화 생성
-- `POST /api/story/generate-images` - 이미지 생성
-- `POST /api/story/generate-music` - 배경 음악 생성
-- `POST /api/story/generate-narration` - 내레이션 생성
+### Story Generation
+- `POST /api/story/generate` - Generate a new story
+- `POST /api/story/generate-images` - Generate story illustrations
+- `GET /api/saved-stories` - Retrieve all saved stories
+- `POST /api/saved-stories/save` - Save a new story
 
-## 개발 방법론
+### Narrator Management
+- `GET /api/narrators` - Get all registered narrators
+- `POST /api/narrators/register` - Register a new narrator
+- `POST /api/narrators/generate-batch-narrations` - Generate narrations for all pages
 
-이 프로젝트는 TDD(Test-Driven Development) 방법론을 따라 개발되었습니다:
-1. 테스트 먼저 작성
-2. 테스트를 통과하는 최소한의 코드 구현
-3. 리팩토링
+### File Management
+- `POST /uploads/*` - Serve uploaded files
+- `POST /api/story/generate-thumbnail` - Generate story thumbnail
 
-## 라이센스
+## 🎨 Features in Detail
 
-MIT
+### Story Generation Process
+1. User photo analysis using AI vision
+2. Character description extraction
+3. Age-appropriate story plot generation
+4. Moral lesson integration
+5. Image prompt creation for each page
+6. Illustration generation using AI
+7. Story persistence with all assets
+
+### Voice Cloning Technology
+- Uses ElevenLabs API for high-quality voice synthesis
+- Supports multiple languages
+- Maintains voice consistency across pages
+- Real-time narration generation
+
+### Responsive Design
+- Mobile-first approach
+- Viewport-optimized story viewer
+- Touch-friendly navigation
+- Smooth animations and transitions
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Google Gemini AI for story and image generation
+- ElevenLabs for voice synthesis technology
+- React and Node.js communities
+- All contributors and testers
+
+## 📞 Support
+
+For support, email support@storyteller.com or open an issue in the GitHub repository.
+
+---
+
+Made with ❤️ for young storytellers everywhere
