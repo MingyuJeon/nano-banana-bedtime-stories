@@ -1,6 +1,44 @@
 {
   "stories": [
     {
+      "id": "1b2ba95c-3c46-46de-9ef3-3e0a37ef355b",
+      "title": "Mingyu and the Whispering Moonpetal",
+      "content": [
+        "Mingyu hummed a happy tune as he looked out his bedroom window one sunny afternoon...",
+        "Suddenly, a tiny, glowing creature, no bigger than his thumb, zipped past his window, leaving a trail of sparkling stardust...",
+        "The creature, which Mingyu guessed was a sprite, flitted towards his bookshelf and tapped a particular book titled 'Whispers of the Wild Woods'...",
+        "As Mingyu pulled the book, the shelf slid open, revealing a tunnel shimmering with soft, green light...",
+        "With a brave gulp, Mingyu stepped into the glowing tunnel, following the sprite into an utterly enchanting forest where trees glowed and flowers sang...",
+        "The sprite, whose name was Lumina, pointed to a patch of dark, thorny vines completely covering a large, sad-looking moonpetal blossom...",
+        "Lumina explained that the blossom was shy and needed a burst of bright, happy thoughts to chase away the enchanted gloom...",
+        "Mingyu closed his eyes and imagined all his happiest memories: playing with his friends, building a magnificent sandcastle, and laughing with his family...",
+        "Suddenly, a wave of pure, sparkling joy burst from Mingyu, washing over the moonpetal blossom and the thorny vines...",
+        "The vines vanished completely, and the moonpetal blossom opened fully, its petals glowing with a soft, radiant light, truly beautiful...",
+        "Lumina thanked Mingyu, explaining that his courage and boundless imagination had saved the shy blossom, filling the forest with renewed hope...",
+        "Lumina led Mingyu back through the shimmering tunnel, and he found himself in his room once more, the book back on the shelf..."
+      ],
+      "images": [
+        "/uploads/story-image-1757294555617-0.png",
+        "/uploads/story-image-1757294556070-1.png",
+        "/uploads/story-image-1757294556562-2.png",
+        "/uploads/story-image-1757294558195-3.png",
+        "/uploads/story-image-1757294559603-4.png",
+        "/uploads/story-image-1757294556233-5.png",
+        "/uploads/story-image-1757294555198-6.png",
+        "/uploads/story-image-1757294558167-7.png",
+        "/uploads/story-image-1757294555561-8.png",
+        "/uploads/story-image-1757294555377-9.png",
+        "/uploads/story-image-1757294558974-10.png",
+        "/uploads/story-image-1757294555515-11.png"
+      ],
+      "thumbnail": "/uploads/thumbnails/thumb-1b2ba95c-3c46-46de-9ef3-3e0a37ef355b.jpg",
+      "userImage": "/uploads/userImage-1757294509635-768774510.png",
+      "narrationUrls": [],
+      "backgroundMusic": "",
+      "moral": "The greatest magic isn't found in faraway lands, but within your own heart: the courage to explore, the power of a happy imagination, and the joy of helping others...",
+      "createdAt": 1757294559639
+    },
+    {
       "id": "cdc44b33-dc40-40d8-a720-f8b2307e07e0",
       "title": "Mingyu and the Whispering Wish Stone",
       "content": [

@@ -198,6 +198,7 @@ export const generateStory = async (req: Request, res: Response) => {
       4. Include magical elements, adventure, and wonder
       5. Have a clear positive message or moral lesson about courage, happiness, imagination, friendship, confidence
       6. Create exactly 5-7 pages/scenes with vivid descriptions
+      7. Every sentence should add '...' at the end of the sentence.
       
       IMAGE PROMPT INSTRUCTIONS:
       - EVERY imagePrompt MUST begin with the EXACT character description
