@@ -7,6 +7,7 @@ import NarratorRegister from "./components/NarratorRegister";
 import StoryList from "./components/StoryList";
 import StoryViewer from "./components/StoryViewer";
 import UserInfo from "./components/UserInfo";
+import OnboardingPage from "./pages/OnboardingPage";
 import { useStoryStore } from "./store/useStoryStore";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
@@ -29,6 +30,7 @@ function App() {
   const [showNarratorRegister, setShowNarratorRegister] = useState(false);
   const [showNarratorList, setShowNarratorList] = useState(false);
   const [showStoryList, setShowStoryList] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(true);
 
   const handleGenerateStory = async () => {
     if (!userImage || !userInfo) {
@@ -159,6 +161,18 @@ function App() {
     setCurrentStory(null);
     setShowStoryList(true);
   };
+
+  const handleOnboardingComplete = (data: any) => {
+    setShowOnboarding(false);
+    // Here you can process the onboarding data and use it for story generation
+    console.log("Onboarding completed with data:", data);
+    // TODO: Use onboarding data to populate userInfo and other fields
+  };
+
+  // Show onboarding page first
+  if (showOnboarding) {
+    return <OnboardingPage onComplete={handleOnboardingComplete} />;
+  }
 
   return (
     <div className="App">

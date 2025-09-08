@@ -10,7 +10,7 @@ const StoryViewer: React.FC = () => {
     currentStory,
     currentPage,
     isPlaying,
-    narrationAudio,
+    // narrationAudio is defined but not used directly in component
     narrationAudios,
     selectedNarrator,
     isLoadingNarrations,
@@ -32,6 +32,7 @@ const StoryViewer: React.FC = () => {
     if (selectedNarrator && currentStory && !hasGeneratedNarrations) {
       generateAllNarrations();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedNarrator, currentStory]);
 
   // Auto-play narration when page changes
@@ -56,6 +57,7 @@ const StoryViewer: React.FC = () => {
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, narrationAudios]);
 
   const generateAllNarrations = async () => {

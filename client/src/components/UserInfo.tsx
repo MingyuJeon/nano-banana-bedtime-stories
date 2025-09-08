@@ -23,7 +23,7 @@ const UserInfo: React.FC = () => {
         setError("");
       }
     }
-  }, [age, gender, setUserInfo]);
+  }, [age, gender, name, setUserInfo]);
 
   const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
