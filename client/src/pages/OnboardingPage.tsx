@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import bananaImage from "../asset/banana.png";
 import ImageUpload from "../components/ImageUpload";
+import NarratorRegister from "../components/NarratorRegister";
 import "./OnboardingPage.css";
 
 /** 가벼운 타이핑 훅 */
@@ -303,7 +304,16 @@ export default function OnboardingPage({
                   className={`chip ${formData.mood === m ? "selected" : ""}`}
                   type="button"
                   aria-pressed={formData.mood === m}
-                  onClick={() => setFormData({ ...formData, mood: m })}
+                  onClick={() => {
+                    setFormData({ ...formData, mood: m });
+                    // Scroll to next section after mood selection
+                    setTimeout(() => {
+                      containerRef.current?.scrollTo({
+                        top: 6 * window.innerHeight,
+                        behavior: "smooth",
+                      });
+                    }, 100);
+                  }}
                 >
                   {m}
                 </button>
@@ -344,7 +354,12 @@ export default function OnboardingPage({
             style={{ marginTop: "2rem" }}
           >
             <h3 className="card-title">Narrator Voice</h3>
-            <label className="label">
+            <NarratorRegister
+              onSuccess={() => {
+                console.log("Narrator registered");
+              }}
+            />
+            {/* <label className="label">
               Upload voice sample
               <input
                 className="input"
@@ -370,7 +385,7 @@ export default function OnboardingPage({
                   setFormData({ ...formData, ttsId: e.target.value })
                 }
               />
-            </label>
+            </label> */}
             <button className="button" type="submit">
               Start Story
             </button>
