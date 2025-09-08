@@ -92,12 +92,12 @@ const StoryViewer: React.FC = () => {
       console.error("Error generating batch narrations:", error);
       if (axios.isAxiosError(error) && error.response) {
         alert(
-          `나레이션 생성 실패: ${
-            error.response.data.error || "서버 오류가 발생했습니다"
+          `Failed to generate narration: ${
+            error.response.data.error || "Server error occurred"
           }`
         );
       } else {
-        alert("나레이션 생성에 실패했습니다. 다시 시도해주세요.");
+        alert("Failed to generate narration. Please try again.");
       }
       setHasGeneratedNarrations(false);
     } finally {
@@ -114,14 +114,14 @@ const StoryViewer: React.FC = () => {
     } else {
       // Check if we have a narrator selected
       if (!selectedNarrator) {
-        alert("나레이터를 선택해주세요");
+        alert("Please select a narrator");
         setShowNarratorSelector(true);
         return;
       }
 
       // Check if narrations are generated
       if (narrationAudios.length === 0) {
-        alert("나레이션을 생성 중입니다. 잠시만 기다려주세요.");
+        alert("Generating narration... Please wait.");
         return;
       }
 
@@ -260,22 +260,22 @@ const StoryViewer: React.FC = () => {
       </div>
 
       <div className="page-indicator">
-        페이지 {currentPage + 1} / {currentStory.content.length}
+        Page {currentPage + 1} / {currentStory.content.length}
       </div>
 
       <div className="story-controls">
         <button
           onClick={handlePrevPage}
           disabled={currentPage === 0}
-          aria-label="이전 페이지"
+          aria-label="Previous Page"
         >
-          이전
+          ← Previous
         </button>
 
         <button
           onClick={handlePlay}
           disabled={isLoadingNarrations}
-          aria-label={isPlaying ? "일시정지" : "읽기"}
+          aria-label={isPlaying ? "Pause" : "Play"}
           style={{
             background: isLoadingNarrations
               ? "#ccc"
@@ -286,38 +286,38 @@ const StoryViewer: React.FC = () => {
           }}
         >
           {isLoadingNarrations
-            ? "나레이션 생성 중..."
+            ? "🎙️ Generating..."
             : isPlaying
-            ? "일시정지"
-            : "읽기"}
+            ? "⏸️ Pause"
+            : "▶️ Play"}
         </button>
 
         <button
           onClick={handleNextPage}
           disabled={currentPage === currentStory.content.length - 1}
-          aria-label="다음 페이지"
+          aria-label="Next Page"
         >
-          다음
+          Next →
         </button>
       </div>
 
       <div className="story-controls" style={{ marginTop: "20px" }}>
         <button
           onClick={handleRestart}
-          aria-label="처음부터"
+          aria-label="Restart"
           style={{ marginRight: "10px" }}
         >
-          처음부터
+          🔄 Restart
         </button>
 
         <button
           onClick={handleNewStory}
-          aria-label="새 동화 만들기"
+          aria-label="New Story"
           style={{
             background: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
           }}
         >
-          새 동화 만들기
+          ✨ New Story
         </button>
       </div>
 

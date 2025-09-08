@@ -180,8 +180,6 @@ function App() {
     <div className="App">
       <div className="container">
         <div className="header">
-          <h1>AI 동화책 만들기</h1>
-          <p>당신만의 특별한 동화를 만들어보세요</p>
           {!showStoryList && !currentStory && !showNarratorList && (
             <div
               style={{
