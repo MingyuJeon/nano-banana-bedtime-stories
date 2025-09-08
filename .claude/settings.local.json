@@ -16,7 +16,10 @@
       "Bash(npx tailwindcss init:*)",
       "Bash(PORT=3001 npm start)",
       "Bash(PORT=3002 npm start)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(git check-ignore:*)",
+      "Read(//Users/god/hackathon/goons/**)",
+      "Bash(git rev-parse:*)"
     ],
     "deny": [],
     "ask": []
