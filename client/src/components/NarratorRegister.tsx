@@ -48,7 +48,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("audio/")) {
-        setError("음성 파일만 업로드 가능합니다");
+        setError("Only audio files can be uploaded");
         return;
       }
       if (file.size > 10 * 1024 * 1024) {
@@ -64,11 +64,11 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        setError("이미지 파일만 업로드 가능합니다");
+        setError("Only image files can be uploaded");
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
-        setError("이미지 크기는 5MB 이하여야 합니다");
+        setError("Image size must be less than 5MB");
         return;
       }
       setImageFile(file);
@@ -80,12 +80,12 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
     e.preventDefault();
 
     if (!name.trim()) {
-      setError("나레이터 이름을 입력해주세요");
+      setError("Please enter a narrator name");
       return;
     }
 
     if (!voiceFile) {
-      setError("음성 파일을 업로드해주세요");
+      setError("Please upload a voice file");
       return;
     }
 
@@ -138,7 +138,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
       }, 3000);
     } catch (err: any) {
       console.error("Error creating narrator:", err);
-      setError(err.response?.data?.error || "나레이터 생성에 실패했습니다");
+      setError(err.response?.data?.error || "Failed to create narrator");
     } finally {
       setLoading(false);
     }
@@ -158,13 +158,13 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
   //     }
   //   } catch (err) {
   //     console.error("Error playing preview:", err);
-  //     alert("음성 미리듣기에 실패했습니다");
+  //     alert("Failed to play preview");
   //     setPlayingPreview(null);
   //   }
   // };
 
   const handleDeleteNarrator = async (narratorId: string) => {
-    if (!window.confirm("이 나레이터를 삭제하시겠습니까?")) {
+    if (!window.confirm("Are you sure you want to delete this narrator?")) {
       return;
     }
 
@@ -173,7 +173,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
       // fetchNarrators();
     } catch (err) {
       console.error("Error deleting narrator:", err);
-      alert("나레이터 삭제에 실패했습니다");
+      alert("Failed to delete narrator");
     }
   };
 
@@ -204,7 +204,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
             borderRadius: "8px",
           }}
         >
-          나레이터가 성공적으로 등록되었습니다!
+          Narrator registered successfully!
         </div>
       )}
 
@@ -332,7 +332,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
       {/* Existing Narrators List */}
       {/* {narrators.length > 0 && (
         <div style={{ marginTop: "30px" }}>
-          <h3 style={{ marginBottom: "20px" }}>등록된 나레이터</h3>
+          <h3 style={{ marginBottom: "20px" }}>Registered Narrators</h3>
           <div style={{ marginBottom: "20px" }}>
             <select
               value={selectedNarratorId}
@@ -347,7 +347,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
                 cursor: "pointer",
               }}
             >
-              <option value="">나레이터를 선택하세요</option>
+              <option value="">Select a narrator</option>
               {narrators.map((narrator) => (
                 <option key={narrator.id} value={narrator.id}>
                   {narrator.name} - {narrator.description || `등록일: ${new Date(narrator.createdAt).toLocaleDateString()}`}
@@ -375,7 +375,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
                 opacity: !selectedNarratorId ? 0.5 : 1,
               }}
             >
-              {playingPreview === selectedNarratorId ? "재생 중..." : "미리듣기"}
+              {playingPreview === selectedNarratorId ? "Playing..." : "Preview"}
             </button>
             <button
               onClick={() => {
@@ -396,7 +396,7 @@ const NarratorRegister: React.FC<NarratorRegisterProps> = ({ onSuccess }) => {
                 opacity: !selectedNarratorId ? 0.5 : 1,
               }}
             >
-              삭제
+              Delete
             </button>
           </div>
         </div>
