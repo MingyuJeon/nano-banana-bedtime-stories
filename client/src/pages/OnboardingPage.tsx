@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import bananaImage from "../asset/banana.png";
+import ImageUpload from "../components/ImageUpload";
 import "./OnboardingPage.css";
 
 /** 가벼운 타이핑 훅 */
@@ -21,7 +22,7 @@ function useTyping(text: string, start: boolean, cps = 20) {
 }
 
 const MOODS = [
-  "😄 Happy",
+  "😄 \nHappy",
   "🙂 Normal",
   "😔 Feeling down",
   "😟 Facing worries",
@@ -39,6 +40,8 @@ export default function OnboardingPage({
     age: "",
     gender: "",
     mood: "",
+    userImage: null as File | null,
+    imagePreview: "",
     voiceFile: null as File | null,
     ttsId: "",
   });
@@ -70,14 +73,14 @@ export default function OnboardingPage({
     const handleScroll = () => {
       const scrollTop = container.scrollTop;
       const sectionHeight = window.innerHeight;
-      
+
       // 현재 위치를 더 정확히 계산 (10% 이상 스크롤하면 다음 섹션으로)
       const scrollProgress = (scrollTop % sectionHeight) / sectionHeight;
       const baseSection = Math.floor(scrollTop / sectionHeight);
-      
+
       // 10% 이상 스크롤했으면 다음 섹션으로 전환
       const section = scrollProgress > 0.1 ? baseSection + 1 : baseSection;
-      
+
       // 최대 섹션 제한
       const finalSection = Math.min(section, 7);
       setCurrentSection(finalSection);
@@ -87,6 +90,26 @@ export default function OnboardingPage({
     handleScroll(); // 초기 실행
     return () => container.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleImageChange = (file: File | null) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({
+          ...formData,
+          userImage: file,
+          imagePreview: reader.result as string,
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setFormData({
+        ...formData,
+        userImage: null,
+        imagePreview: "",
+      });
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -228,6 +251,16 @@ export default function OnboardingPage({
                 <option value="prefer-not">Prefer not to say</option>
               </select>
             </label>
+            <label className="label">Your picture</label>
+            <ImageUpload />
+            {/* <div className="label">
+              <span className="block mb-2">Upload Your Photo</span>
+              <ImageDropzone
+                value={formData.userImage}
+                preview={formData.imagePreview}
+                onChange={handleImageChange}
+              />
+            </div> */}
           </motion.form>
         </div>
       </section>
@@ -285,7 +318,7 @@ export default function OnboardingPage({
           <motion.div
             className="bubble"
             initial={{ opacity: 0 }}
-            animate={{ 
+            animate={{
               opacity: currentSection === 6 ? 1 : 0,
               y: currentSection > 6 ? -50 : currentSection < 6 ? 50 : 0,
             }}

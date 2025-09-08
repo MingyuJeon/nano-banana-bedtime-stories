@@ -1,6 +1,6 @@
+import { Upload } from "lucide-react";
 import React, { ChangeEvent, useRef, useState } from "react";
 import { useStoryStore } from "../store/useStoryStore";
-
 const ImageUpload: React.FC = () => {
   const { userImage, setUserImage } = useStoryStore();
   const [error, setError] = useState<string>("");
@@ -53,8 +53,6 @@ const ImageUpload: React.FC = () => {
 
   return (
     <div className="image-upload-container">
-      <h2>주인공</h2>
-
       {!userImage ? (
         <div className="upload-area">
           <input
@@ -66,11 +64,8 @@ const ImageUpload: React.FC = () => {
             id="file-input"
             aria-label="파일 선택"
           />
-          <label htmlFor="file-input" style={{ display: "none" }}>
-            파일 선택
-          </label>
           <button onClick={handleButtonClick} aria-label="파일 선택">
-            파일 선택
+            <Upload className={"w-8 h-8 text-gray-600"} />
           </button>
         </div>
       ) : (

@@ -21,7 +21,10 @@
       "Read(//Users/god/hackathon/goons/**)",
       "Bash(git rev-parse:*)",
       "Bash(git rm:*)",
-      "Bash(sed:*)"
+      "Bash(sed:*)",
+      "mcp__shadcn__list_components",
+      "mcp__shadcn__list_blocks",
+      "mcp__shadcn__get_component"
     ],
     "deny": [],
     "ask": []
