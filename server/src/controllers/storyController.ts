@@ -2,9 +2,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import { Request, Response } from "express";
+import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import * as crypto from "node:crypto";
 
 // Load environment variables
 dotenv.config();
@@ -73,10 +73,14 @@ export const generateStory = async (req: Request, res: Response) => {
     }
 
     // Step 1: Analyze user's uploaded image to extract character features
-    const userImagePath = path.join(__dirname, "../../uploads", files.userImage[0].filename);
+    const userImagePath = path.join(
+      __dirname,
+      "../../uploads",
+      files.userImage[0].filename
+    );
     const imageData = fs.readFileSync(userImagePath);
-    const base64Image = imageData.toString('base64');
-    
+    const base64Image = imageData.toString("base64");
+
     console.log("Analyzing user image for character features...");
     const imageAnalysisResponse = await ai.models.generateContent({
       model: "gemini-2.5-flash",
@@ -87,7 +91,7 @@ export const generateStory = async (req: Request, res: Response) => {
             {
               text: `Analyze this image and describe the person's appearance in great detail for character consistency.
                      Provide a detailed description including:
-                     - Age group (child/teen/adult)
+                     - Age: ${age}
                      - Hair: color, length, style, texture
                      - Eyes: color, shape, expression
                      - Face: shape, skin tone, distinctive features
@@ -97,20 +101,21 @@ export const generateStory = async (req: Request, res: Response) => {
                      
                      Format: Write as a single detailed paragraph that can be used as a character reference for illustration.
                      Example: "A young child with curly brown hair, bright green eyes, wearing a red t-shirt with a star pattern..."
-                     `
+                     `,
             },
             {
               inlineData: {
                 mimeType: files.userImage[0].mimetype,
-                data: base64Image
-              }
-            }
-          ]
-        }
-      ]
+                data: base64Image,
+              },
+            },
+          ],
+        },
+      ],
     });
 
-    const characterDescription = imageAnalysisResponse.text || "a child with bright eyes and a warm smile";
+    const characterDescription =
+      imageAnalysisResponse.text || "a child with bright eyes and a warm smile";
     console.log("Character description:", characterDescription);
 
     // Step 2: Create story with character-aware prompts
@@ -216,7 +221,7 @@ export const generateImages = async (req: Request, res: Response) => {
     }
 
     console.log("Generating images with gemini-2.5-flash-image-preview...");
-    
+
     const images = await Promise.all(
       imagePrompts.map(async (prompt: string, idx: number) => {
         try {
@@ -230,7 +235,7 @@ export const generateImages = async (req: Request, res: Response) => {
           `;
 
           console.log(`Generating image ${idx + 1}/${imagePrompts.length}...`);
-          
+
           const response = await ai.models.generateContent({
             model: "gemini-2.5-flash-image-preview",
             contents: enhancedPrompt,
@@ -246,7 +251,10 @@ export const generateImages = async (req: Request, res: Response) => {
           const imagePart = parts.find((part: any) => part.inlineData?.data);
 
           if (!imagePart?.inlineData?.data) {
-            console.error("No image data found in response for prompt:", prompt);
+            console.error(
+              "No image data found in response for prompt:",
+              prompt
+            );
             throw new Error("No image data in response");
           }
 
@@ -292,32 +300,44 @@ export const generateNarration = async (req: Request, res: Response) => {
     if (voiceFile && voiceFile !== null && voiceFile !== "null") {
       try {
         const voicePath = path.join(__dirname, "../../", voiceFile);
-        
+
         // Check if the file actually exists
         if (fs.existsSync(voicePath)) {
           // Generate hash for the voice file
           const fileHash = getFileHash(voicePath);
-          
+
           // Check if we have a cached voice ID for this file
           if (voiceCache[fileHash]) {
             voiceId = voiceCache[fileHash].voiceId;
-            console.log(`Using cached voice ID for file hash ${fileHash.substring(0, 8)}...`);
+            console.log(
+              `Using cached voice ID for file hash ${fileHash.substring(
+                0,
+                8
+              )}...`
+            );
           } else {
             // Create new voice clone only if not cached
-            console.log(`Creating new voice clone for file hash ${fileHash.substring(0, 8)}...`);
+            console.log(
+              `Creating new voice clone for file hash ${fileHash.substring(
+                0,
+                8
+              )}...`
+            );
             const voice = await elevenlabs.voices.ivc.create({
               name: `User Voice ${Date.now()}`,
               files: [fs.createReadStream(voicePath)],
             });
             voiceId = voice.voiceId;
-            
+
             // Cache the voice ID
             voiceCache[fileHash] = {
               voiceId: voice.voiceId,
               createdAt: Date.now(),
             };
             saveVoiceCache();
-            console.log(`Voice clone created and cached with ID: ${voice.voiceId}`);
+            console.log(
+              `Voice clone created and cached with ID: ${voice.voiceId}`
+            );
           }
         } else {
           console.log("Voice file path does not exist:", voicePath);
