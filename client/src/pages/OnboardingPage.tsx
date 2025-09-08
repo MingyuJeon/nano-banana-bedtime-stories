@@ -1,35 +1,6 @@
 import { useEffect, useState } from "react";
-import { InView } from "react-intersection-observer";
-import { motion, Variants } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import "./OnboardingPage.css";
-
-/** 공통: 섹션 래퍼 — 뷰포트에 들어오면 once=true로 애니메이션 트리거 */
-function RevealSection({
-  children,
-  rootMargin = "-10% 0px",
-  className = "",
-}: {
-  children: (opts: { in: boolean }) => React.ReactNode;
-  rootMargin?: string;
-  className?: string;
-}) {
-  const [hasEntered, setHasEntered] = useState(false);
-  return (
-    <InView
-      triggerOnce
-      rootMargin={rootMargin}
-      onChange={(inView) => {
-        if (inView) setHasEntered(true);
-      }}
-    >
-      {({ ref }) => (
-        <section ref={ref} className={`section ${className}`}>
-          {children({ in: hasEntered })}
-        </section>
-      )}
-    </InView>
-  );
-}
 
 /** 가벼운 타이핑 훅 */
 function useTyping(text: string, start: boolean, cps = 20) {
@@ -48,254 +19,201 @@ function useTyping(text: string, start: boolean, cps = 20) {
   return out;
 }
 
-/** 공통: 페이드+슬라이드 인 */
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
+const MOODS = ["Happy", "Brave", "Sleepy", "Curious", "Silly"] as const;
 
-/** 1. 요정 등장 */
-function FairyIntro({ active }: { active: boolean }) {
-  return (
-    <motion.div
-      initial="hidden"
-      animate={active ? "show" : "hidden"}
-      variants={fadeUp}
-      className="flex-col-center"
-    >
-      <div className="fairy" aria-hidden />
-      <h1 className="title">Banana Tales</h1>
-      <p className="subtitle">Bedtime stories made just for you</p>
-    </motion.div>
-  );
-}
-
-/** 2. 요정 말풍선 + 타이핑: "Tell me about you" */
-function FairyAskAboutYou({ active }: { active: boolean }) {
-  const typed = useTyping("Tell me about you", active, 24);
-  return (
-    <motion.div
-      initial="hidden"
-      animate={active ? "show" : "hidden"}
-      variants={fadeUp}
-      className="flex-col-center"
-    >
-      <div className="fairy" aria-hidden />
-      <div className="bubble">{typed}</div>
-    </motion.div>
-  );
-}
-
-/** 3. 독자 정보 입력란 */
-function ReaderForm({ active, onSubmit }: { active: boolean; onSubmit: (data: any) => void }) {
+export default function OnboardingPage({ onComplete }: { onComplete: (data: any) => void }) {
+  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     age: "",
     gender: "",
+    mood: "",
+    voiceFile: null as File | null,
+    ttsId: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
-
-  return (
-    <motion.form
-      initial="hidden"
-      animate={active ? "show" : "hidden"}
-      variants={fadeUp}
-      className="card"
-      onSubmit={handleSubmit}
-    >
-      <label className="label">
-        Name
-        <input 
-          className="input" 
-          name="name" 
-          placeholder="e.g. Aiden"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        />
-      </label>
-      <label className="label">
-        Age
-        <input 
-          className="input" 
-          type="number" 
-          name="age" 
-          min={0} 
-          max={120}
-          value={formData.age}
-          onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-        />
-      </label>
-      <label className="label">
-        Gender
-        <select 
-          className="input" 
-          name="gender"
-          value={formData.gender}
-          onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-        >
-          <option value="" disabled>
-            Select…
-          </option>
-          <option value="girl">Girl</option>
-          <option value="boy">Boy</option>
-          <option value="nonbinary">Non-binary</option>
-          <option value="prefer-not">Prefer not to say</option>
-        </select>
-      </label>
-      <button className="button" type="submit">
-        Save
-      </button>
-    </motion.form>
-  );
-}
-
-/** 4. 다시 요정: "How you feel today?" */
-function FairyAskMood({ active }: { active: boolean }) {
-  const typed = useTyping("How you feel today?", active, 24);
-  return (
-    <motion.div
-      initial="hidden"
-      animate={active ? "show" : "hidden"}
-      variants={fadeUp}
-      className="flex-col-center"
-    >
-      <div className="fairy" aria-hidden />
-      <div className="bubble">{typed}</div>
-    </motion.div>
-  );
-}
-
-/** 5. Mood 선택 (예시: 기본 버튼) */
-const MOODS = ["Happy", "Brave", "Sleepy", "Curious", "Silly"] as const;
-function MoodPicker({ active, onSelect }: { active: boolean; onSelect: (mood: string) => void }) {
-  const [selectedMood, setSelectedMood] = useState("");
-
-  const handleMoodSelect = (mood: string) => {
-    setSelectedMood(mood);
-    onSelect(mood);
-  };
-
-  return (
-    <motion.div
-      initial="hidden"
-      animate={active ? "show" : "hidden"}
-      variants={fadeUp}
-      className="card grid"
-      role="group"
-      aria-label="Select your mood"
-    >
-      {MOODS.map((m) => (
-        <button 
-          key={m} 
-          className={`chip ${selectedMood === m ? 'selected' : ''}`}
-          type="button" 
-          aria-pressed={selectedMood === m}
-          onClick={() => handleMoodSelect(m)}
-        >
-          {m}
-        </button>
-      ))}
-    </motion.div>
-  );
-}
-
-/** 6. 나레이터 등록(파일 업로드 or URL) */
-function NarratorRegister({ active, onSubmit }: { active: boolean; onSubmit: (data: any) => void }) {
-  const [voiceFile, setVoiceFile] = useState<File | null>(null);
-  const [ttsId, setTtsId] = useState("");
+  const { scrollYProgress } = useScroll();
+  
+  // 타이핑 텍스트 - Hook은 항상 호출되어야 함
+  const askAboutYouText = useTyping("Tell me about you", currentStep >= 1, 24);
+  const askMoodText = useTyping("How you feel today?", currentStep >= 3, 24);
+  
+  // 스크롤 진행도를 스텝으로 변환 (0-6 단계)
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      const step = Math.floor(latest * 6);
+      setCurrentStep(step);
+    });
+    return () => unsubscribe();
+  }, [scrollYProgress]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ voiceFile, ttsId });
-  };
-
-  return (
-    <motion.form
-      initial="hidden"
-      animate={active ? "show" : "hidden"}
-      variants={fadeUp}
-      className="card"
-      onSubmit={handleSubmit}
-    >
-      <h3 className="card-title">Narrator Voice</h3>
-      <label className="label">
-        Upload voice sample
-        <input 
-          className="input" 
-          type="file" 
-          accept="audio/*"
-          onChange={(e) => setVoiceFile(e.target.files?.[0] || null)}
-        />
-      </label>
-      <div className="or">or</div>
-      <label className="label">
-        TTS Voice ID (e.g., ElevenLabs)
-        <input
-          className="input"
-          name="ttsId"
-          placeholder="21m00Tcm4TlvDq8ikWAM"
-          value={ttsId}
-          onChange={(e) => setTtsId(e.target.value)}
-        />
-      </label>
-      <button className="button" type="submit">
-        Register
-      </button>
-    </motion.form>
-  );
-}
-
-export default function OnboardingPage({ onComplete }: { onComplete: (data: any) => void }) {
-  const [userData, setUserData] = useState<any>({});
-
-  const handleReaderSubmit = (data: any) => {
-    setUserData((prev: any) => ({ ...prev, ...data }));
-  };
-
-  const handleMoodSelect = (mood: string) => {
-    setUserData((prev: any) => ({ ...prev, mood }));
-  };
-
-  const handleNarratorSubmit = (data: any) => {
-    const completeData = { ...userData, ...data };
+    const completeData = { ...formData };
     onComplete(completeData);
   };
 
+  // 각 단계별 opacity 계산
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const subtitleOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const askAboutYouOpacity = useTransform(scrollYProgress, [0.1, 0.2, 0.3, 0.4], [0, 1, 1, 0]);
+  const readerFormOpacity = useTransform(scrollYProgress, [0.3, 0.4, 0.5, 0.6], [0, 1, 1, 0]);
+  const askMoodOpacity = useTransform(scrollYProgress, [0.5, 0.6, 0.7, 0.8], [0, 1, 1, 0]);
+  const moodPickerOpacity = useTransform(scrollYProgress, [0.7, 0.8, 0.9, 1], [0, 1, 1, 1]);
+  const narratorOpacity = useTransform(scrollYProgress, [0.85, 0.95, 1], [0, 1, 1]);
+
   return (
-    <main>
-      {/* 1. 요정 이미지 화면에 등장 */}
-      <RevealSection>
-        {({ in: ok }) => <FairyIntro active={ok} />}
-      </RevealSection>
+    <div className="onboarding-container">
+      {/* 스크롤 가능한 영역 (투명) */}
+      <div className="scroll-container">
+        <div className="scroll-section" />
+        <div className="scroll-section" />
+        <div className="scroll-section" />
+        <div className="scroll-section" />
+        <div className="scroll-section" />
+        <div className="scroll-section" />
+      </div>
 
-      {/* 2. 요정 말풍선(타이핑) */}
-      <RevealSection>
-        {({ in: ok }) => <FairyAskAboutYou active={ok} />}
-      </RevealSection>
+      {/* 고정된 컨텐츠 영역 */}
+      <div className="fixed-content">
+        {/* 요정은 항상 표시 */}
+        <motion.div 
+          className="fairy" 
+          aria-hidden
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+        />
+        
+        {/* Title & Subtitle - 처음에만 보임 */}
+        <motion.h1 
+          className="title"
+          style={{ opacity: titleOpacity }}
+        >
+          Banana Tales
+        </motion.h1>
+        <motion.p 
+          className="subtitle"
+          style={{ opacity: subtitleOpacity }}
+        >
+          Bedtime stories made just for you
+        </motion.p>
 
-      {/* 3. 독자 정보 입력란 */}
-      <RevealSection>
-        {({ in: ok }) => <ReaderForm active={ok} onSubmit={handleReaderSubmit} />}
-      </RevealSection>
+        {/* Ask About You - 두번째 단계 */}
+        <motion.div 
+          className="bubble"
+          style={{ opacity: askAboutYouOpacity }}
+        >
+          {askAboutYouText}
+        </motion.div>
 
-      {/* 4. 다시 요정(타이핑) */}
-      <RevealSection>
-        {({ in: ok }) => <FairyAskMood active={ok} />}
-      </RevealSection>
+        {/* Reader Form - 세번째 단계 */}
+        <motion.form
+          className="card"
+          style={{ opacity: readerFormOpacity }}
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <label className="label">
+            Name
+            <input 
+              className="input" 
+              name="name" 
+              placeholder="e.g. Aiden"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+          </label>
+          <label className="label">
+            Age
+            <input 
+              className="input" 
+              type="number" 
+              name="age" 
+              min={0} 
+              max={120}
+              value={formData.age}
+              onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+            />
+          </label>
+          <label className="label">
+            Gender
+            <select 
+              className="input" 
+              name="gender"
+              value={formData.gender}
+              onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+            >
+              <option value="" disabled>
+                Select…
+              </option>
+              <option value="girl">Girl</option>
+              <option value="boy">Boy</option>
+              <option value="nonbinary">Non-binary</option>
+              <option value="prefer-not">Prefer not to say</option>
+            </select>
+          </label>
+        </motion.form>
 
-      {/* 5. Mood 선택 */}
-      <RevealSection>
-        {({ in: ok }) => <MoodPicker active={ok} onSelect={handleMoodSelect} />}
-      </RevealSection>
+        {/* Ask Mood - 네번째 단계 */}
+        <motion.div 
+          className="bubble"
+          style={{ opacity: askMoodOpacity }}
+        >
+          {askMoodText}
+        </motion.div>
 
-      {/* 6. 나레이터 등록 */}
-      <RevealSection>
-        {({ in: ok }) => <NarratorRegister active={ok} onSubmit={handleNarratorSubmit} />}
-      </RevealSection>
-    </main>
+        {/* Mood Picker - 다섯번째 단계 */}
+        <motion.div
+          className="card grid"
+          style={{ opacity: moodPickerOpacity }}
+          role="group"
+          aria-label="Select your mood"
+        >
+          {MOODS.map((m) => (
+            <button 
+              key={m} 
+              className={`chip ${formData.mood === m ? 'selected' : ''}`}
+              type="button" 
+              aria-pressed={formData.mood === m}
+              onClick={() => setFormData({ ...formData, mood: m })}
+            >
+              {m}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Narrator Register - 여섯번째 단계 */}
+        <motion.form
+          className="card narrator-card"
+          style={{ opacity: narratorOpacity }}
+          onSubmit={handleSubmit}
+        >
+          <h3 className="card-title">Narrator Voice</h3>
+          <label className="label">
+            Upload voice sample
+            <input 
+              className="input" 
+              type="file" 
+              accept="audio/*"
+              onChange={(e) => setFormData({ ...formData, voiceFile: e.target.files?.[0] || null })}
+            />
+          </label>
+          <div className="or">or</div>
+          <label className="label">
+            TTS Voice ID (e.g., ElevenLabs)
+            <input
+              className="input"
+              name="ttsId"
+              placeholder="21m00Tcm4TlvDq8ikWAM"
+              value={formData.ttsId}
+              onChange={(e) => setFormData({ ...formData, ttsId: e.target.value })}
+            />
+          </label>
+          <button className="button" type="submit">
+            Start Story
+          </button>
+        </motion.form>
+      </div>
+    </div>
   );
 }

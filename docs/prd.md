@@ -98,7 +98,7 @@ function FairyIntro({ active }: { active: boolean }) {
       className="flex-col-center"
     >
       <div className="fairy" aria-hidden />
-      <h1 className="title">Banana Tales</h1>
+      <h1 className="title">Bedtime Story</h1>
       <p className="subtitle">Bedtime stories made just for you</p>
     </motion.div>
   );
