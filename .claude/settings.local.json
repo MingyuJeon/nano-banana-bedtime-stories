@@ -8,7 +8,8 @@
       "Bash(lsof:*)",
       "Bash(node:*)",
       "Bash(npm install:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []

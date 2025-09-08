@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
-import { generateStory, generateImages, generateMusic, generateNarration } from '../controllers/storyController';
+import { generateStory, generateImages, generateNarration } from '../controllers/storyController';
 
 const router = express.Router();
 
@@ -40,9 +40,6 @@ router.post('/generate', upload.fields([
 
 // Generate images for story
 router.post('/generate-images', generateImages);
-
-// Generate background music
-router.post('/generate-music', generateMusic);
 
 // Generate narration
 router.post('/generate-narration', generateNarration);

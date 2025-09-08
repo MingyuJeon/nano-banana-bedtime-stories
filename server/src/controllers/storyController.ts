@@ -278,27 +278,6 @@ export const generateImages = async (req: Request, res: Response) => {
   }
 };
 
-export const generateMusic = async (_req: Request, res: Response) => {
-  try {
-    // const { story, mood } = req.body; // Commented as they're not used
-
-    // Note: Lyria API requires special access and setup
-    // For now, return a placeholder music URL
-    // To implement Lyria:
-    // 1. Get access to Lyria RealTime API
-    // 2. Set up streaming infrastructure
-    // 3. Use the code from bgm-generate.md
-
-    const musicUrl =
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-
-    res.json({ musicUrl });
-  } catch (error) {
-    console.error("Music generation error:", error);
-    res.status(500).json({ error: "Failed to generate music" });
-  }
-};
-
 export const generateNarration = async (req: Request, res: Response) => {
   try {
     const { text, voiceFile } = req.body;
