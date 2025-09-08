@@ -4,7 +4,6 @@ import "./App.css";
 import ImageUpload from "./components/ImageUpload";
 import NarratorList from "./components/NarratorList";
 import NarratorRegister from "./components/NarratorRegister";
-import OnboardingPage from "./components/OnboardingPage/OnboardingPage";
 import StoryList from "./components/StoryList";
 import StoryViewer from "./components/StoryViewer";
 import UserInfo from "./components/UserInfo";
@@ -30,7 +29,6 @@ function App() {
   const [showNarratorRegister, setShowNarratorRegister] = useState(false);
   const [showNarratorList, setShowNarratorList] = useState(false);
   const [showStoryList, setShowStoryList] = useState(false);
-  const [showOnboarding, setShowOnboarding] = useState(true);
 
   const handleGenerateStory = async () => {
     if (!userImage || !userInfo) {
@@ -161,11 +159,6 @@ function App() {
     setCurrentStory(null);
     setShowStoryList(true);
   };
-
-  // Show onboarding page if it's the first visit
-  if (showOnboarding) {
-    return <OnboardingPage onComplete={() => setShowOnboarding(false)} />;
-  }
 
   return (
     <div className="App">
