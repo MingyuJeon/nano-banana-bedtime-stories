@@ -1,6 +1,34 @@
 {
   "stories": [
     {
+      "id": "f12990fc-66f2-4aed-936d-011dc21fb1d2",
+      "title": "Sunny Peel's Glimmering Quest...",
+      "content": [
+        "In a land bursting with bright colors and happy sounds lived Sunny Peel, a creature as cuddly as a cloud and as cheerful as a sunrise...",
+        "One sunny morning, Sunny Peel noticed something unusual...",
+        "A tiny, shimmering butterfly named Luna fluttered down and landed gently on Sunny Peel's banana costume...",
+        "Luna softly whispered about the 'Heartstone of Laughter' in the Whispering Woods, which had lost its special glow, making everything around it sad...",
+        "As they ventured deeper, they found a small, fluffy Cloud-Puff tangled in a bramble bush, looking very sad...",
+        "Finally, they arrived at a quiet grotto, where the 'Heartstone of Laughter' sat dim and grey, beside it, a tiny, sad gnome named Glimmer...",
+        "Sunny Peel, with his arms outstretched, offered Glimmer a warm, comforting hug, and his magical banana peel began to glow with a brilliant, radiating light..."
+      ],
+      "images": [
+        "/uploads/story-image-1757313185112-0.png",
+        "/uploads/story-image-1757313185802-1.png",
+        "/uploads/story-image-1757313183931-2.png",
+        "/uploads/story-image-1757313184881-3.png",
+        "/uploads/story-image-1757313190990-4.png",
+        "/uploads/story-image-1757313184666-5.png",
+        "/uploads/story-image-1757313184400-6.png"
+      ],
+      "thumbnail": "/uploads/thumbnails/thumb-f12990fc-66f2-4aed-936d-011dc21fb1d2.jpg",
+      "userImage": "/uploads/userImage-1757313143823-528129870.jpg",
+      "narrationUrls": [],
+      "backgroundMusic": "",
+      "moral": "The story teaches us that true happiness and kindness are powerful magic, able to bring light to dark places, comfort to sad hearts, and joy to the world, making every day an adventure worth sharing with friends...",
+      "createdAt": 1757313191024
+    },
+    {
       "id": "1b2ba95c-3c46-46de-9ef3-3e0a37ef355b",
       "title": "Mingyu and the Whispering Moonpetal",
       "content": [

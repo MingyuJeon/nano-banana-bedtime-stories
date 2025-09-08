@@ -164,9 +164,11 @@ function App() {
 
   const handleOnboardingComplete = (data: any) => {
     setShowOnboarding(false);
-    // Here you can process the onboarding data and use it for story generation
+    // If story was generated, show the story list
+    if (data.showStoryList) {
+      setShowStoryList(true);
+    }
     console.log("Onboarding completed with data:", data);
-    // TODO: Use onboarding data to populate userInfo and other fields
   };
 
   // Show onboarding page first

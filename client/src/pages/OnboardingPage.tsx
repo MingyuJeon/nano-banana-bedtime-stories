@@ -1,9 +1,13 @@
+import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import bananaImage from "../asset/banana.png";
 import ImageUpload from "../components/ImageUpload";
 import NarratorRegister from "../components/NarratorRegister";
+import { useStoryStore } from "../store/useStoryStore";
 import "./OnboardingPage.css";
+
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
 
 /** 가벼운 타이핑 훅 */
 function useTyping(text: string, start: boolean, cps = 20) {
@@ -36,6 +40,8 @@ export default function OnboardingPage({
   onComplete: (data: any) => void;
 }) {
   const [currentSection, setCurrentSection] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     age: "",
@@ -46,6 +52,8 @@ export default function OnboardingPage({
     voiceFile: null as File | null,
     ttsId: "",
   });
+
+  const { userImage, userInfo, voiceFile, setUserInfo } = useStoryStore();
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -112,10 +120,114 @@ export default function OnboardingPage({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const completeData = { ...formData };
-    onComplete(completeData);
+    
+    // 필수 정보 확인
+    if (!userImage || !formData.name || !formData.age || !formData.gender) {
+      setError("Please fill in all required information (name, age, gender, and photo)");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      // userInfo 설정
+      const genderMap: { [key: string]: "male" | "female" | "other" } = {
+        "boy": "male",
+        "girl": "female",
+        "nonbinary": "other",
+        "prefer-not": "other"
+      };
+
+      const userInfoData = {
+        age: parseInt(formData.age),
+        gender: genderMap[formData.gender] || "other",
+        userName: formData.name
+      };
+      
+      setUserInfo(userInfoData);
+
+      // FormData 생성
+      const formDataToSend = new FormData();
+      formDataToSend.append("userImage", userImage);
+      formDataToSend.append("age", formData.age);
+      formDataToSend.append("gender", userInfoData.gender);
+      if (formData.name) {
+        formDataToSend.append("userName", formData.name);
+      }
+      if (voiceFile) {
+        formDataToSend.append("voiceFile", voiceFile);
+      }
+
+      // Generate story
+      const storyResponse = await axios.post(
+        `${API_URL}/api/story/generate`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const {
+        story,
+        userImage: imagePath,
+        voiceFile: voicePath,
+      } = storyResponse.data;
+
+      // Generate images for each page
+      const imagePrompts = story.pages.map((page: any) => page.imagePrompt);
+      const imagesResponse = await axios.post(
+        `${API_URL}/api/story/generate-images`,
+        {
+          imagePrompts,
+          userImage: imagePath,
+          characterDescription: story.characterDescription || "",
+        }
+      );
+
+      // Generate narration only if voice file was provided
+      let narrationUrl = null;
+      if (voicePath) {
+        const narrationText = story.pages
+          .map((page: any) => page.text)
+          .join(" ");
+        const narrationResponse = await axios.post(
+          `${API_URL}/api/story/generate-narration`,
+          {
+            text: narrationText,
+            voiceFile: voicePath,
+          }
+        );
+        narrationUrl = narrationResponse.data.narrationUrl;
+      }
+
+      // Save the generated story
+      const storyToSave = {
+        title: story.title,
+        content: story.pages.map((page: any) => page.text),
+        images: imagesResponse.data.images || [],
+        userImage: imagePath,
+        narrationUrls: narrationUrl ? [narrationUrl] : [],
+        backgroundMusic: null,
+        moral: story.moral || "",
+      };
+
+      await axios.post(`${API_URL}/api/saved-stories/save`, storyToSave);
+
+      // 성공적으로 완료되면 onComplete 호출하여 동화책 목록으로 이동
+      onComplete({ showStoryList: true });
+    } catch (err: any) {
+      setError(
+        err.response?.data?.error || "An error occurred while creating your story"
+      );
+      console.error("Story generation error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -386,8 +498,13 @@ export default function OnboardingPage({
                 }
               />
             </label> */}
-            <button className="button" type="submit">
-              Start Story
+            {error && (
+              <div className="error-message" style={{ marginBottom: "1rem", color: "red" }}>
+                {error}
+              </div>
+            )}
+            <button className="button" type="submit" disabled={loading}>
+              {loading ? "Creating your story..." : "Start Story"}
             </button>
           </motion.form>
         </div>
