@@ -5,6 +5,7 @@ import fs from "fs";
 import path from "path";
 import narratorRoutes from "./routes/narratorRoutes";
 import storyRoutes from "./routes/storyRoutes";
+import storyStorageRoutes from "./routes/storyStorageRoutes";
 
 dotenv.config();
 
@@ -51,6 +52,7 @@ app.use("/uploads", express.static(uploadsDir));
 // Routes
 app.use("/api/story", storyRoutes);
 app.use("/api/narrators", narratorRoutes);
+app.use("/api/saved-stories", storyStorageRoutes);
 
 // Health check endpoint
 app.get("/health", (_req, res) => {
