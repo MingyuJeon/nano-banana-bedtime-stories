@@ -62,7 +62,7 @@ export default function OnboardingPage({
     24
   );
 
-  // 스크롤 이벤트 핸들러
+  // 스크롤 이벤트 핸들러 - 더 민감한 감지
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -70,11 +70,21 @@ export default function OnboardingPage({
     const handleScroll = () => {
       const scrollTop = container.scrollTop;
       const sectionHeight = window.innerHeight;
-      const section = Math.floor(scrollTop / sectionHeight);
-      setCurrentSection(section);
+      
+      // 현재 위치를 더 정확히 계산 (10% 이상 스크롤하면 다음 섹션으로)
+      const scrollProgress = (scrollTop % sectionHeight) / sectionHeight;
+      const baseSection = Math.floor(scrollTop / sectionHeight);
+      
+      // 10% 이상 스크롤했으면 다음 섹션으로 전환
+      const section = scrollProgress > 0.1 ? baseSection + 1 : baseSection;
+      
+      // 최대 섹션 제한
+      const finalSection = Math.min(section, 7);
+      setCurrentSection(finalSection);
     };
 
     container.addEventListener("scroll", handleScroll);
+    handleScroll(); // 초기 실행
     return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -106,7 +116,7 @@ export default function OnboardingPage({
               opacity: currentSection === 0 ? 1 : 0,
               y: currentSection === 0 ? 0 : currentSection > 0 ? -50 : 50,
             }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
           >
             Banana Bedtime Stories
           </motion.h1>
@@ -117,7 +127,7 @@ export default function OnboardingPage({
               opacity: currentSection === 0 ? 1 : 0,
               y: currentSection === 0 ? 0 : currentSection > 0 ? -50 : 50,
             }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
           >
             Bedtime stories made just for you
           </motion.p>
@@ -135,7 +145,7 @@ export default function OnboardingPage({
               scale: currentSection === 1 ? 1 : 0.8,
               y: currentSection > 1 ? -50 : currentSection < 1 ? 50 : 0,
             }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
           >
             {fairyIntroText}
           </motion.div>
@@ -153,7 +163,7 @@ export default function OnboardingPage({
               scale: currentSection === 2 ? 1 : 0.8,
               y: currentSection > 2 ? -50 : currentSection < 2 ? 50 : 0,
             }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
           >
             {askAboutYouText}
           </motion.div>
@@ -170,7 +180,7 @@ export default function OnboardingPage({
               opacity: currentSection === 3 ? 1 : 0,
               y: currentSection === 3 ? 0 : currentSection > 3 ? -30 : 30,
             }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
             onSubmit={(e) => e.preventDefault()}
           >
             <label className="label">
@@ -233,7 +243,7 @@ export default function OnboardingPage({
               scale: currentSection === 4 ? 1 : 0.8,
               y: currentSection > 4 ? -50 : currentSection < 4 ? 50 : 0,
             }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
           >
             {askMoodText}
           </motion.div>
@@ -251,7 +261,7 @@ export default function OnboardingPage({
               opacity: currentSection === 5 ? 1 : 0,
               y: currentSection === 5 ? 0 : currentSection > 5 ? -30 : 30,
             }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
           >
             <div className="grid">
               {MOODS.map((m) => (
@@ -279,7 +289,7 @@ export default function OnboardingPage({
               opacity: currentSection === 6 ? 1 : 0,
               y: currentSection > 6 ? -50 : currentSection < 6 ? 50 : 0,
             }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
             style={{ marginTop: "2rem" }}
           >
             Okay, now let's add the voice to the story.
@@ -296,7 +306,7 @@ export default function OnboardingPage({
               opacity: currentSection === 7 ? 1 : 0,
               y: currentSection === 7 ? 0 : currentSection > 7 ? -30 : 30,
             }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
             onSubmit={handleSubmit}
             style={{ marginTop: "2rem" }}
           >

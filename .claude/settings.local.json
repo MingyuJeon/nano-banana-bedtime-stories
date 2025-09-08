@@ -20,7 +20,8 @@
       "Bash(git check-ignore:*)",
       "Read(//Users/god/hackathon/goons/**)",
       "Bash(git rev-parse:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(sed:*)"
     ],
     "deny": [],
     "ask": []
