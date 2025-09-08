@@ -19,7 +19,8 @@
       "Bash(npm uninstall:*)",
       "Bash(git check-ignore:*)",
       "Read(//Users/god/hackathon/goons/**)",
-      "Bash(git rev-parse:*)"
+      "Bash(git rev-parse:*)",
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": []
