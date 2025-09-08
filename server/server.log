@@ -301,3 +301,64 @@ Initializing GoogleGenAI with API key: AIzaSyC-yI...
 [dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
 Server is running on port 5001
 [32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+Server is running on port 5001
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+Server is running on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+Server is running on port 5001
+[32m[nodemon] clean exit - waiting for changes before restart[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.2] injecting env (3) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+Initializing GoogleGenAI with API key: AIzaSyC-yI...
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+Server is running on port 5001
+Analyzing user image for character features...
+Character description: This is a cheerful young boy, appearing to be between 4 and 6 years old, with a bright, innocent demeanor. He has short, straight, dark brown hair that is parted slightly to the left, falling neatly across his forehead just above his eyebrows, and trimmed just above his ears. His eyes are a deep, dark brown, almost black, and almond-shaped, with a crinkling joyful expression as he smiles. His face is a soft, youthful oval with full, slightly rosy cheeks and fair to light skin. He has a small, slightly upturned nose and a wide, open-mouthed smile revealing a full set of small, even white teeth. His eyebrows are well-defined and gently arched. He stands upright with a relaxed posture, hands casually at his sides, showcasing a slender but healthy child's build. He is dressed in a short-sleeved, crew-neck t-shirt featuring horizontal stripes that alternate between white, a light sky blue, and a vibrant medium blue, with a small functional pocket on the left chest. He wears dark blue denim jeans. There are no unique identifying marks such as moles or scars visible on his exposed skin.
+Generating personalized story with character...
+User image available for reference: /uploads/userImage-1757289476316-884559290.png
+Generating images with gemini-2.5-flash-image-preview...
+Generating image 1/6...
+Generating image 2/6...
+Generating image 3/6...
+Generating image 4/6...
+Generating image 5/6...
+Generating image 6/6...
+Image saved: story-image-1757289517307-4.png
+Image saved: story-image-1757289517365-5.png
+Image saved: story-image-1757289517370-1.png
+Image saved: story-image-1757289517406-0.png
+Image saved: story-image-1757289517414-2.png
+Image saved: story-image-1757289517444-3.png
+All images generated successfully
+Generating speech for narrator 민규 with voice ID: RQi1mzM5GTMYlDuxkxMW
+Speech generated and saved: narrator-speech-1757289563902.mp3
+Generating speech for narrator 민규 with voice ID: RQi1mzM5GTMYlDuxkxMW
+Speech generated and saved: narrator-speech-1757289589615.mp3
+Generating speech for narrator 민규 with voice ID: RQi1mzM5GTMYlDuxkxMW
+Speech generated and saved: narrator-speech-1757289622985.mp3

@@ -7,7 +7,8 @@
       "Bash(curl:*)",
       "Bash(lsof:*)",
       "Bash(node:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(pkill:*)"
     ],
     "deny": [],
     "ask": []

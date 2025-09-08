@@ -1,20 +1,12 @@
 {
   "narrators": [
     {
-      "id": "9e59470f-44a4-4772-9eb6-9f236d3a8caf",
-      "name": "Test Narrator",
-      "voiceId": "9e59470f-44a4-4772-9eb6-9f236d3a8caf",
-      "voiceUrl": null,
-      "imageUrl": null,
-      "createdAt": 1757287493247
-    },
-    {
-      "id": "d6800260-50eb-480b-9337-6655f387477e",
+      "id": "d6af8aa0-d8da-4f17-bf3a-1db46c55709e",
       "name": "민규",
       "voiceId": "RQi1mzM5GTMYlDuxkxMW",
-      "voiceUrl": "/uploads/voiceFile-1757288458058-414133530.mp3",
+      "voiceUrl": "/uploads/voiceFile-1757289470245-297287076.mp3",
       "imageUrl": null,
-      "createdAt": 1757288459468
+      "createdAt": 1757289470251
     }
   ]
 }

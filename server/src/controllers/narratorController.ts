@@ -57,7 +57,7 @@ if (!fs.existsSync(NARRATORS_FILE)) {
 }
 
 // Get all narrators
-export const getNarrators = async (req: Request, res: Response) => {
+export const getNarrators = async (_req: Request, res: Response) => {
   try {
     const data = fs.readFileSync(NARRATORS_FILE, 'utf-8');
     const { narrators } = JSON.parse(data);
