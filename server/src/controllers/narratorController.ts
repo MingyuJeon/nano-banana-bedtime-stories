@@ -51,9 +51,37 @@ const getFileHash = (filePath: string): string => {
   return crypto.createHash('sha256').update(fileBuffer).digest('hex');
 };
 
+// Default narrator configuration
+const DEFAULT_NARRATOR = {
+  id: 'default-narrator',
+  name: 'Default Narrator',
+  voiceId: 'default',
+  voiceUrl: '/asset/default_voice.mp3',
+  imageUrl: null,
+  isDefault: true
+};
+
 // Initialize narrators file if it doesn't exist
 if (!fs.existsSync(NARRATORS_FILE)) {
-  fs.writeFileSync(NARRATORS_FILE, JSON.stringify({ narrators: [] }, null, 2));
+  console.log('Creating narrators file with default narrator');
+  fs.writeFileSync(NARRATORS_FILE, JSON.stringify({ narrators: [DEFAULT_NARRATOR] }, null, 2));
+} else {
+  // Ensure default narrator exists
+  console.log('Reading existing narrators file');
+  const data = fs.readFileSync(NARRATORS_FILE, 'utf-8');
+  const narratorsData = JSON.parse(data);
+  
+  // Check if default narrator exists
+  const hasDefault = narratorsData.narrators.some((n: any) => n.id === 'default-narrator');
+  
+  if (!hasDefault) {
+    console.log('Adding default narrator to existing narrators file');
+    // Add default narrator at the beginning
+    narratorsData.narrators.unshift(DEFAULT_NARRATOR);
+    fs.writeFileSync(NARRATORS_FILE, JSON.stringify(narratorsData, null, 2));
+  } else {
+    console.log('Default narrator already exists');
+  }
 }
 
 // Get all narrators
@@ -181,6 +209,11 @@ export const deleteNarrator = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
+    // Prevent deletion of default narrator
+    if (id === 'default-narrator') {
+      return res.status(400).json({ error: 'Cannot delete the default narrator' });
+    }
+    
     // Read narrators
     const data = fs.readFileSync(NARRATORS_FILE, 'utf-8');
     const narratorsData = JSON.parse(data);
@@ -243,6 +276,77 @@ export const generateSpeech = async (req: Request, res: Response) => {
     
     if (!narrator) {
       return res.status(404).json({ error: 'Narrator not found' });
+    }
+
+    // Handle default narrator
+    if (narrator.id === 'default-narrator') {
+      console.log('Using default narrator with pre-recorded voice');
+      
+      // Create voice clone from default voice file if not already done
+      const defaultVoicePath = path.join(__dirname, '../../asset/default_voice.mp3');
+      const fileHash = getFileHash(defaultVoicePath);
+      
+      let voiceId: string;
+      
+      // Check if we already have this voice cloned
+      if (narratorVoiceCache['default-narrator']) {
+        voiceId = narratorVoiceCache['default-narrator'].voiceId;
+        console.log('Using cached default voice clone');
+      } else {
+        // Create voice clone from default voice file
+        console.log('Creating voice clone from default voice file');
+        try {
+          const voice = await elevenlabs.voices.ivc.create({
+            name: 'Default Narrator Voice',
+            files: [fs.createReadStream(defaultVoicePath)],
+          });
+          
+          voiceId = voice.voiceId;
+          
+          // Cache the voice ID
+          narratorVoiceCache['default-narrator'] = {
+            voiceId: voice.voiceId,
+            fileHash: fileHash,
+            createdAt: Date.now(),
+          };
+          saveNarratorVoiceCache();
+          
+          console.log(`Default voice clone created with ID: ${voice.voiceId}`);
+        } catch (error) {
+          console.error('Failed to create default voice clone:', error);
+          // Fallback to Rachel voice
+          voiceId = '21m00Tcm4TlvDq8ikWAM';
+        }
+      }
+      
+      // Generate speech using the cloned default voice
+      const audio = await elevenlabs.textToSpeech.convert(voiceId, {
+        text,
+        modelId: 'eleven_multilingual_v2',
+        outputFormat: 'mp3_44100_128',
+      });
+
+      // Convert audio stream to buffer
+      const chunks: Buffer[] = [];
+      for await (const chunk of audio) {
+        chunks.push(Buffer.from(chunk));
+      }
+      const audioBuffer = Buffer.concat(chunks);
+
+      // Save audio file
+      const uploadsDir = path.join(__dirname, '../../uploads');
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+      
+      const filename = `narrator-speech-${Date.now()}.mp3`;
+      const filepath = path.join(uploadsDir, filename);
+
+      fs.writeFileSync(filepath, audioBuffer);
+      const narrationUrl = `/uploads/${filename}`;
+
+      console.log(`Speech generated and saved: ${filename}`);
+      return res.json({ narrationUrl });
     }
 
     let voiceId = narrator.voiceId;
@@ -337,12 +441,54 @@ export const generateBatchNarrations = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Narrator not found' });
     }
 
-    let voiceId = narrator.voiceId;
+    let voiceId: string;
     
-    // If voiceId is just a UUID (not from ElevenLabs), use default voice
-    if (!voiceId || voiceId === narrator.id) {
-      console.log('Narrator does not have a cloned voice, using default voice');
-      voiceId = '21m00Tcm4TlvDq8ikWAM'; // Rachel voice as default
+    // Handle default narrator
+    if (narrator.id === 'default-narrator') {
+      console.log('Using default narrator with pre-recorded voice');
+      
+      // Create voice clone from default voice file if not already done
+      const defaultVoicePath = path.join(__dirname, '../../asset/default_voice.mp3');
+      const fileHash = getFileHash(defaultVoicePath);
+      
+      // Check if we already have this voice cloned
+      if (narratorVoiceCache['default-narrator']) {
+        voiceId = narratorVoiceCache['default-narrator'].voiceId;
+        console.log('Using cached default voice clone');
+      } else {
+        // Create voice clone from default voice file
+        console.log('Creating voice clone from default voice file');
+        try {
+          const voice = await elevenlabs.voices.ivc.create({
+            name: 'Default Narrator Voice',
+            files: [fs.createReadStream(defaultVoicePath)],
+          });
+          
+          voiceId = voice.voiceId;
+          
+          // Cache the voice ID
+          narratorVoiceCache['default-narrator'] = {
+            voiceId: voice.voiceId,
+            fileHash: fileHash,
+            createdAt: Date.now(),
+          };
+          saveNarratorVoiceCache();
+          
+          console.log(`Default voice clone created with ID: ${voice.voiceId}`);
+        } catch (error) {
+          console.error('Failed to create default voice clone:', error);
+          // Fallback to Rachel voice
+          voiceId = '21m00Tcm4TlvDq8ikWAM';
+        }
+      }
+    } else {
+      voiceId = narrator.voiceId;
+      
+      // If voiceId is just a UUID (not from ElevenLabs), use default voice
+      if (!voiceId || voiceId === narrator.id) {
+        console.log('Narrator does not have a cloned voice, using default voice');
+        voiceId = '21m00Tcm4TlvDq8ikWAM'; // Rachel voice as default
+      }
     }
 
     console.log(`Generating batch narrations for story ${storyId} with narrator ${narrator.name}`);

@@ -1,6 +1,14 @@
 {
   "narrators": [
     {
+      "id": "default-narrator",
+      "name": "Default Narrator",
+      "voiceId": "default",
+      "voiceUrl": "/asset/default_voice.mp3",
+      "imageUrl": null,
+      "isDefault": true
+    },
+    {
       "id": "d6af8aa0-d8da-4f17-bf3a-1db46c55709e",
       "name": "민규",
       "voiceId": "RQi1mzM5GTMYlDuxkxMW",

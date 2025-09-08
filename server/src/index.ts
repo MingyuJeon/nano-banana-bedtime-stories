@@ -49,6 +49,10 @@ if (!fs.existsSync(uploadsDir)) {
 // Static file serving for uploaded files
 app.use("/uploads", express.static(uploadsDir));
 
+// Static file serving for asset files (including default voice)
+const assetDir = path.join(__dirname, "../asset");
+app.use("/asset", express.static(assetDir));
+
 // Routes
 app.use("/api/story", storyRoutes);
 app.use("/api/narrators", narratorRoutes);

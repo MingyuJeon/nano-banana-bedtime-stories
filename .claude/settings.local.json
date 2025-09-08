@@ -9,7 +9,10 @@
       "Bash(node:*)",
       "Bash(npm install:*)",
       "Bash(pkill:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(cat:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(npx nodemon:*)"
     ],
     "deny": [],
     "ask": []

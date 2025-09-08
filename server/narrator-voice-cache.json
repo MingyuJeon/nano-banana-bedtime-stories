@@ -3,5 +3,10 @@
     "voiceId": "RQi1mzM5GTMYlDuxkxMW",
     "fileHash": "449c51f3ec91d787220bc07baf2a64e29a5c28ad43565a761aed11a94e0d6f9f",
     "createdAt": 1757288459468
+  },
+  "default-narrator": {
+    "voiceId": "Bf0PozuY8zrjftDHc56k",
+    "fileHash": "449c51f3ec91d787220bc07baf2a64e29a5c28ad43565a761aed11a94e0d6f9f",
+    "createdAt": 1757295411680
   }
 }

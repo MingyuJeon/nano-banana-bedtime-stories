@@ -528,8 +528,40 @@ export const generateNarration = async (req: Request, res: Response) => {
 
     // Use default voice if no custom voice
     if (!voiceId) {
-      voiceId = "21m00Tcm4TlvDq8ikWAM"; // Rachel voice
-      console.log("Using default voice (Rachel)");
+      console.log("Using default voice from asset/default_voice.mp3");
+      
+      // Try to create voice clone from default voice file
+      const defaultVoicePath = path.join(__dirname, "../../asset/default_voice.mp3");
+      const defaultHash = getFileHash(defaultVoicePath);
+      
+      // Check if we have a cached voice ID for default voice
+      if (voiceCache[defaultHash]) {
+        voiceId = voiceCache[defaultHash].voiceId;
+        console.log("Using cached default voice ID");
+      } else {
+        try {
+          // Create voice clone from default voice file
+          console.log("Creating voice clone from default voice file");
+          const voice = await elevenlabs.voices.ivc.create({
+            name: "Default Story Voice",
+            files: [fs.createReadStream(defaultVoicePath)],
+          });
+          voiceId = voice.voiceId;
+          
+          // Cache the voice ID
+          voiceCache[defaultHash] = {
+            voiceId: voice.voiceId,
+            createdAt: Date.now(),
+          };
+          saveVoiceCache();
+          console.log(`Default voice clone created with ID: ${voice.voiceId}`);
+        } catch (error) {
+          console.error("Failed to create default voice clone:", error);
+          // Fallback to Rachel voice if clone fails
+          voiceId = "21m00Tcm4TlvDq8ikWAM";
+          console.log("Using fallback Rachel voice");
+        }
+      }
     }
 
     // Generate speech with adjustable voice settings
